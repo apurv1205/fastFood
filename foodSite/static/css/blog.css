@@ -11,6 +11,7 @@
 }
 
 .content {
+    margin-top: 40px;
     margin-left: 40px;
     margin-right: 40px;
 }
@@ -47,5 +48,6 @@ h1, h2, h3, h4 {
 }
 a.right {
     position: absolute;
+    top: 10px;
     right: 40px;
 }
