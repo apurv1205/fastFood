@@ -1,0 +1,11 @@
+{%extends "base.html" %}
+{%block title %}Welcome to Django store{% endblock %}
+{%block head %}Welcome to Django store{% endblock %}
+{%block content %}
+{% if user.username %}
+<p>Welcome {{ user.username }}!Here your page content</p>
+{% else %}
+<p>Welcome anonymous user!
+You need to login</p><br/>
+{% endif %}
+{% endblock %}
