@@ -1,8 +1,5 @@
 from django.contrib import admin
 
-<<<<<<< HEAD
-# Register your models here.
-=======
 # Register your models here.
 from .models import FoodItems,Restaurant
 
@@ -17,4 +14,3 @@ class FoodItemsAdmin(admin.ModelAdmin):
 
 admin.site.register(FoodItems, FoodItemsAdmin)
 admin.site.register(Restaurant)
->>>>>>> 00ad753503eb95e9ea6dd3eb7d4c195a96707f0e
