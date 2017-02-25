@@ -49,6 +49,7 @@ class CurrentOrders(models.Model):
 	status=models.CharField(max_length=10,null=True)
 	order_timestamp=models.DateTimeField(null=True)
 	amount=models.IntegerField(null=True)
+	address=models.TextField(null=True)
 
 	def place_order(self):
 		self.order_timestamp=timezone.now()
