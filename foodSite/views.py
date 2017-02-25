@@ -11,17 +11,19 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            stat = form.cleaned_data['choice_field']
+            if stat=="Costumer" : status="C"
+            else : status="R" 
             user = User.objects.create_user(
+            first_name=form.cleaned_data['first_name'],
+            last_name=status,
             username=form.cleaned_data['username'],
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('success/')
     else:
         form = RegistrationForm()
-    variables = RequestContext(request, {
-    'form': form
-    })
  
     return render(request,
     'registration/register.html',
@@ -30,7 +32,7 @@ def register(request):
  
 def register_success(request):
     return render_to_response(
-    'registration/success.html',
+    'registration/success.html',{'user':request.user}
     )
  
 def logout_page(request):

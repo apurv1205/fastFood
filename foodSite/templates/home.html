@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Welcome {{user.username}}{% endblock %}
 {% block content %}
+<<<<<<< HEAD
     <p>Food delivery system!!!</p>
     <a href="/logout/">Logout</a>
 
@@ -31,4 +32,8 @@
 {% endfor %}
     </tr>
 </table>
+=======
+	<a class="right" href="/logout/">Logout</a>
+    <p>Welcome back {{ user.first_name }} !!!</p>
+>>>>>>> 8b6d16ec2d1b04442bede8490c3da33c01c244d6
 {% endblock %}

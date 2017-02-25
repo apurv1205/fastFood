@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^accounts/login/$', auth_views.login,name="login"), # If user is not login it will redirect to login page
     url(r'^register/$', views.register,name='register'),
     url(r'^register/success/$', views.register_success,name="register_success"),
+    url(r'^register/home/$', views.home,name="home"),
     url(r'^home/$', views.home,name="home"),
 ]
