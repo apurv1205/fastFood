@@ -5,9 +5,10 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
- 	url(r'^$', views.main_page,name="main_page"),
-	url(r'^user/(\w+)/$', views.user_page,name="user_page"),
-	url(r'^login/$', auth_views.login,name="login"),
-	url(r'^logout/$', views.logout_page,name="logout_page"),
-	url(r'^register/$', views.register_page,name="register_page"),
-	]
+    url(r'^$', auth_views.login,name="login"),
+    url(r'^logout/$', views.logout_page,name="logout_page"),
+    url(r'^accounts/login/$', auth_views.login,name="login"), # If user is not login it will redirect to login page
+    url(r'^register/$', views.register,name='register'),
+    url(r'^register/success/$', views.register_success,name="register_success"),
+    url(r'^home/$', views.home,name="home"),
+]

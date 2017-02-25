@@ -1,38 +1,45 @@
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import UserCreationForm
-from django.template import RequestContext
-from django.template.context_processors import csrf
-from django.shortcuts import render
-from django.utils import timezone
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
-from django import template
-from django.template.loader import get_template 
-from django.template import Context
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.contrib.auth import logout
-from django.template import RequestContext
-from django.shortcuts import render_to_response
 from foodSite.forms import *
-
-def register_page(request):
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render_to_response,render
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+ 
+@csrf_protect
+def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(username=form.cleaned_data['username'],password=form.cleaned_data['password1'],email=form.cleaned_data['email'])
-            return HttpResponseRedirect('/')
-    form = RegistrationForm()
-    variables = RequestContext(request, {'form': form})
-    return render(request,'registration/register.html',{'form':form})
-
+            user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+            email=form.cleaned_data['email']
+            )
+            return HttpResponseRedirect('/register/success/')
+    else:
+        form = RegistrationForm()
+    variables = RequestContext(request, {
+    'form': form
+    })
+ 
+    return render(request,
+    'registration/register.html',
+    {'form': form}
+    )
+ 
+def register_success(request):
+    return render_to_response(
+    'registration/success.html',
+    )
+ 
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
-
-def user_page(request):
-    return render(request, 'main_page.html', {})
-
-def main_page(request):
-    return render_to_response('main_page.html', RequestContext(request))
+ 
+@login_required
+def home(request):
+    return render_to_response(
+    'home.html',
+    { 'user': request.user }
+    )
