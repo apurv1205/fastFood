@@ -14,7 +14,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             stat = form.cleaned_data['choice_field']
-            if stat=="Costumer" : 
+            if stat=="Costomer" : 
                 status="C"
                 C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=form.cleaned_data['username'])
                 C.save()

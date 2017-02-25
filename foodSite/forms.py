@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
  
 class RegistrationForm(forms.Form):
-    CHOICES = (('1', 'Costumer',), ('2', 'Restaurant',))
+    CHOICES = (('1', 'Costomer',), ('2', 'Restaurant',))
 
     first_name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Name"))
     username = forms.RegexField(regex=r'^\d{10}$', widget=forms.NumberInput(attrs=dict(required=True, max_length=30)), label=_("Contact"), error_messages={ 'invalid': ("Enter a 10 digit number") })

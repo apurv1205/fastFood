@@ -20,6 +20,7 @@ class Customer(models.Model):
 class Restaurant(models.Model):
 	rest_id=models.IntegerField(primary_key=True)
 	name=models.CharField(max_length=100,null=True)
+	passwd=models.CharField(max_length=100,null=True)
 	contact=models.CharField(max_length=100,null=True)
 	address=models.TextField(null=True)
 	email=models.CharField(max_length=100,null=True)
