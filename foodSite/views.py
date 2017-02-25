@@ -25,14 +25,14 @@ def register_page(request):
             return HttpResponseRedirect('/')
     form = RegistrationForm()
     variables = RequestContext(request, {'form': form})
-    return render_to_response('registration/register.html',variables)
+    return render(request,'registration/register.html',{'form':form})
 
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
 
 def user_page(request):
-    return render(request, 'base.html', {})
+    return render(request, 'main_page.html', {})
 
 def main_page(request):
-    return render_to_response('base.html', RequestContext(request))
+    return render_to_response('main_page.html', RequestContext(request))
