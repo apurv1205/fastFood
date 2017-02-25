@@ -26,8 +26,11 @@ class Restaurant(models.Model):
 	email=models.CharField(max_length=100,null=True)
 	rating=models.FloatField(null=True)
 
+	def __str__(self):
+			return str(self.rest_id)
+
 class FoodItems(models.Model):
-	food_id=models.IntegerField(null=True)
+	food_id=models.IntegerField(primary_key=True)
 	rest=models.ForeignKey(Restaurant,null=True,on_delete=models.CASCADE)
 	name=models.CharField(max_length=50,null=True)
 	price=models.IntegerField(null=True)

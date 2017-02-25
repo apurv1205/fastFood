@@ -4,30 +4,12 @@
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
     <p>Food delivery system!!!</p>
 
+<h3>Select restaurant<h3>
 <table>
-    <tr>
-{% for item in menu %}
-        <td>{{ item.name }}</td>
-        <td>{{ item.price }} </td>
-    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
-    </tr>
-    <br>
-    <tr>
-    {% endif %}
-{% endfor %}
-    </tr>
-</table>
-
-<table>
-    <tr>
 {% for rest in restaurants %}
-        <td>{{ rest.name }}</td><br>
-        <td>{{ rest.contact }} </td>
-    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+	<tr>
+	<h5><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5>
     </tr>
-    <br>
-    <tr>
-    {% endif %}
 {% endfor %}
     </tr>
 </table>
@@ -37,8 +19,7 @@
     <button id="search_submit" type="submit" >Submit</button>
 </form>
 {% for item in category_output %}
-        <td>{{ item.name }}</td><br>
-        <td>{{ item.price }} </td>
+        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
     {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
     </tr>
     <br>
@@ -50,8 +31,7 @@
     <button id="search_submit" type="submit" >Submit</button>
 </form>
 {% for item in search_output %}
-        <td>{{ item.name }}</td><br>
-        <td>{{ item.price }} </td>
+        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
     {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
     </tr>
     <br>

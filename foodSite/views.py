@@ -2,7 +2,7 @@ from foodSite.forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response,render
+from django.shortcuts import render_to_response,render,get_object_or_404
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from foodSite.models import *
@@ -79,3 +79,22 @@ def home(request):
     return render_to_response(
     'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
     )
+
+def rest_detail(request, pk):
+    menu = FoodItems.objects.all()
+    items=[]
+    for item in menu:
+        if str(item.rest) == str(pk) : 
+            items.append(item)
+    rest = get_object_or_404(Restaurant, pk=pk)
+    return render(request, 'rest_detail.html', {'items': items})
+
+def cart(request, pk):
+    item = get_object_or_404(FoodItems, pk=pk)
+    customers = Customer.objects.all()
+    user=request.user
+    for cust in customers :
+        if user.username == cust.contact :
+            C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=amount+item.price)
+            C.place_order()
+    return render(request, 'cart.html', {'item': item})

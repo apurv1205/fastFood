@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post">
+        <h1>{{ rest.name }}</h1>
+        <h3>Food Items provided</h3>
+        <table>
+		{% for item in items %}
+			<tr>
+			<h4><a href="{% url 'cart' pk=item.pk %}">{{item.name}}</a></h4>
+			</tr>
+		{% endfor %}
+		</table>
+    </div>
+{% endblock %}
