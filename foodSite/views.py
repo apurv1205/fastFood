@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response,render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from foodSite.models import *
+import editdistance
 
 @csrf_protect
 def register(request):
@@ -49,7 +50,27 @@ def logout_page(request):
  
 @login_required
 def home(request):
+
+    menu = FoodItems.objects.all()
+    restaurants = Restaurant.objects.all()
+    
+    #search by category
+    
+    if request.method == 'GET':
+        category_output=[]
+        search_query = request.GET.get('search_box', None)
+        for item in menu:
+            # TODO : replace by edit distance later on
+            print item.category, search_query
+            a = item.category.lower()
+            b = search_query.lower()
+            if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+               category_output.append(item)
+
+            print "category"
+            for item in category_output:
+                print item.name
+
     return render_to_response(
-    'home.html',
-    { 'user': request.user }
+    'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output }
     )

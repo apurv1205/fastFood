@@ -1,7 +1,48 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
+{% block title %}Welcome {{user.username}}{% endblock %}
 {% block content %}
-	<a class="right" href="/logout/">Logout</a>
-    <p>Welcome back {{ user.first_name }} !!!</p>
+    <p>Food delivery system!!!</p>
+    <a href="/logout/">Logout</a>
+
+<table>
+    <tr>
+{% for item in menu %}
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
+    </tr>
+</table>
+
+<table>
+    <tr>
+{% for rest in restaurants %}
+        <td>{{ rest.name }}</td><br>
+        <td>{{ rest.contact }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
+    </tr>
+</table>
+&nbsp &nbsp
+<form type="get" action="." style="margin: 0">
+    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+    <button id="search_submit" type="submit" >Submit</button>
+</form>
+{% for item in category_output %}
+        <td>{{ item.name }}</td><br>
+        <td>{{ item.price }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
 {% endblock %}
