@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response,render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from .models import FoodItems, Restaurant
+from foodSite.models import *
 import editdistance
 
 @csrf_protect
@@ -14,8 +14,15 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             stat = form.cleaned_data['choice_field']
-            if stat=="Costumer" : status="C"
-            else : status="R" 
+            if stat=="Costumer" : 
+                status="C"
+                C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=form.cleaned_data['username'])
+                C.save()
+            else : 
+                status="R"
+                R=Restaurant(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=form.cleaned_data['username'])
+                R.save() 
+
             user = User.objects.create_user(
             first_name=form.cleaned_data['first_name'],
             last_name=status,

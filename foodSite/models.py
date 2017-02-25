@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-
 from django.db import models
 import random
 from django.utils import timezone
@@ -11,7 +10,6 @@ class Customer(models.Model):
 	name=models.CharField(max_length=100,null=True)
 	username=models.CharField(max_length=100,null=True)
 	passwd=models.CharField(max_length=100,null=True)
-	address=models.TextField(null=True)
 	email=models.CharField(max_length=100,null=True)
 	cantact=models.CharField(max_length=20,null=True)
 
@@ -21,10 +19,10 @@ class Customer(models.Model):
 
 class Restaurant(models.Model):
 	rest_id=models.IntegerField(primary_key=True)
-	website=models.CharField(max_length=100,null=True)
 	name=models.CharField(max_length=100,null=True)
 	contact=models.CharField(max_length=100,null=True)
 	address=models.TextField(null=True)
+	email=models.CharField(max_length=100,null=True)
 	rating=models.FloatField(null=True)
 
 class FoodItems(models.Model):
