@@ -33,10 +33,23 @@
 </table>
 &nbsp &nbsp
 <form type="get" action="." style="margin: 0">
-    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
     <button id="search_submit" type="submit" >Submit</button>
 </form>
 {% for item in category_output %}
+        <td>{{ item.name }}</td><br>
+        <td>{{ item.price }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
+<form type="get" action="." style="margin: 0">
+    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
+    <button id="search_submit" type="submit" >Submit</button>
+</form>
+{% for item in search_output %}
         <td>{{ item.name }}</td><br>
         <td>{{ item.price }} </td>
     {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}

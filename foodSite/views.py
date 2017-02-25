@@ -52,18 +52,22 @@ def home(request):
     if request.method == 'GET':
         category_output=[]
         search_query = request.GET.get('search_box', None)
-        for item in menu:
-            # TODO : replace by edit distance later on
-            print item.category, search_query
-            a = item.category.lower()
-            b = search_query.lower()
-            if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
-               category_output.append(item)
+        if search_query!=None:
+            for item in menu:
+                a = item.category.lower()
+                b = search_query.lower()
+                if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                   category_output.append(item)
 
-            print "category"
-            for item in category_output:
-                print item.name
+        search_output=[]
+        search_query = request.GET.get('search_box1', None)
+        if search_query!=None:
+            for item in menu:
+                a = item.name.lower()
+                b = search_query.lower()
+                if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                   search_output.append(item)
 
     return render_to_response(
-    'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output }
+    'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
     )
