@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response,render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
- 
+from .models import FoodItems, Restaurant
 @csrf_protect
 def register(request):
     if request.method == 'POST':
@@ -39,7 +39,9 @@ def logout_page(request):
  
 @login_required
 def home(request):
+
+    menu = FoodItems.objects.all()
+    restaurants = Restaurant.objects.all()
     return render_to_response(
-    'home.html',
-    { 'user': request.user }
+    'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants }
     )

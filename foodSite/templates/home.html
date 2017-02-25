@@ -1,7 +1,34 @@
 {% extends "base.html" %}
-{% block title %}Welcome to Django{% endblock %}
-{% block head %}Welcome to Django{% endblock %}
+{% block title %}Welcome {{user.username}}{% endblock %}
 {% block content %}
-    <p>Welcome {{ user.username }} !!!</p>
+    <p>Food delivery system!!!</p>
     <a href="/logout/">Logout</a>
+
+<table>
+    <tr>
+{% for item in menu %}
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
+    </tr>
+</table>
+
+<table>
+    <tr>
+{% for rest in restaurants %}
+        <td>{{ rest.name }}</td><br>
+        <td>{{ rest.contact }} </td>
+    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
+    </tr>
+    <br>
+    <tr>
+    {% endif %}
+{% endfor %}
+    </tr>
+</table>
 {% endblock %}
