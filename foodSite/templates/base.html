@@ -1,12 +1,22 @@
+{% load staticfiles %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
-        <title>Django Login Application |
-        {% block title %}{% endblock %}</title>
+        <title>Fast Food</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <h1>{% block head %}{% endblock %}</h1>
-        {% block content %}{% endblock %}
- 
+        <div class="page-header">
+        <h1><a href="/">Fast Food</a></h1>
+        </div>
+
+        <div class="content">
+        {% block content %}
+        {% endblock %}
+        </div>
     </body>
 </html>
+

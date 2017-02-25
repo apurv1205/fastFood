@@ -5,6 +5,7 @@
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
+    <a class="right" href="/register">Register</a>
     <form method="post" action=".">{% csrf_token %}
         <table border="0">
             <tr><th><label for="id_username">Contact:</label></th><td>{{ form.username }}</td></tr>
@@ -13,5 +14,4 @@
         <input type="submit" value="Login" />
         <input type="hidden" name="next" value="/home" />
     </form>
-    <a href="/register">Register</a>
 {% endblock %}
