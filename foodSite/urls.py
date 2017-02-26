@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^home/$', views.home,name="home"),
     url(r'^rest/(?P<pk>\d+)/$', views.rest_detail, name='rest_detail'),
     url(r'^item/(?P<pk>\d+)/$', views.cart, name='cart'),
+    url(r'^checkout/$', views.checkout, name = 'checkout'),
+    url(r'^confirm/$', views.confirm_order, name= 'confirm_order')
 ]
