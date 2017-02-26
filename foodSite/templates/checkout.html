@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
+<h3>Current items in cart</h3>
+<table style="width:70%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant</th>
+	    <th>Status</th>
+	    <th>Quantity</th>
+	    <th>Price</th> 
+	</tr>
+	{% for c in cart%}
+		<tr>
+			<td >{{c.0}}</td>
+		    <td>{{c.1}}</td>
+		    <td>{{c.4}}</td>
+		    <td>{{c.3}}</td>
+		    <td>{{c.2}}</td> 
+		</tr>
+	{%endfor%}&nbsp
+		<tr>
+			<td ></td>
+		    <td></td>
+		    <td></td>
+		    <td>Total Amount</td>
+		    <td>{{total}}</td> 
+		</tr>
+</table>
+
+
+<form method="post" action=".">{% csrf_token %}
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Confirm" />
+    </form>
+
+
+{%endblock %}

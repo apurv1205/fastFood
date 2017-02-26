@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from foodSite.models import *
 import editdistance
+from .forms import AddressForm
 
 @csrf_protect
 def register(request):
@@ -149,3 +150,72 @@ def cart(request, pk):
                 C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
                 C.place_order()
     return render(request, 'cart.html', {'item': item})
+
+@login_required
+def checkout(request):
+    usr=request.user
+    crt=[]
+    total = 0
+    orders = CurrentOrders.objects.all()
+    form = AddressForm()
+    for item in orders :
+        customer = Customer.objects.get(pk=item.user.user_id)
+        if customer.contact == usr.username and item.status == "Added to cart":
+            fitem=FoodItems.objects.get(pk=item.food.food_id)
+            ritem=Restaurant.objects.get(pk=item.rest.rest_id)
+            total=total+item.quantity*item.amount
+            crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
+    
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    for cust in customers:
+        if usr.username == cust.contact:
+            ordered_cust = cust
+
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data
+            if ordered_cust != None:
+                #filterargs = { 'user' : ordered_cust , 'status' : "Added to cart"}
+                orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id, status__exact = 'Added to cart')
+                for order in orders:
+                    order.address = address
+                    order.status = "Confirmed"
+                return render(request, 'success.html')
+    else:
+        return render(request, 'checkout.html', {'cart' : crt, 'total' : total, 'form':form})
+
+@login_required
+def confirm_order(request):
+    usr=request.user
+    crt=[]
+    total = 0
+    cart1 = CurrentOrders.objects.all()
+    for item in cart1 :
+        customer = Customer.objects.get(pk=item.user.user_id)
+        if customer.contact == usr.username and item.status == "Added to cart":
+            fitem=FoodItems.objects.get(pk=item.food.food_id)
+            ritem=Restaurant.objects.get(pk=item.rest.rest_id)
+            total=total+item.quantity*item.amount
+            crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
+
+    ordered_cust=None
+    for cust in customers:
+        if user.username == cust.contact:
+            ordered_cust = cust
+
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data
+            if ordered_cust != None:
+                filterargs = { user : ordered_cust , status : "Added to cart"}
+                orders = CurrentOrders.objects.filter(**filterargs)
+                for order in orders:
+                    order.address = address
+                    order.status = "Confirmed"
+                return render(request, 'success.html')
+
+    return render(request,'home.html')
+

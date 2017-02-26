@@ -31,3 +31,6 @@ class RegistrationForm(forms.Form):
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
+
+class AddressForm(forms.Form):
+    address = forms.CharField(label="Delivery address", max_length=200)

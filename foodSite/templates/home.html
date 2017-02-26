@@ -28,6 +28,10 @@
 		    <td>{{total}}</td> 
 		</tr>
 </table>
+
+<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+&nbsp
+
 <h3>Select restaurant</h3>
 <table>
 {% for rest in restaurants %}
