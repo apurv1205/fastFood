@@ -118,7 +118,7 @@ def home(request):
             form = PostForm()
         '''
         return render_to_response(
-        'rest_home.html', {'form': form , 'orders' : lst,'user': usr}
+        'rest_home.html', { 'orders' : lst,'user': usr}
         )
 
 def rest_detail(request, pk):
