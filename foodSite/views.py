@@ -34,14 +34,14 @@ def register(request):
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
-            else : return render_to_response("rest_home.html", RequestContext(request, {}))
+            if status=="C" : return render("home.html",{})
+            else : return render("rest_home.html",{})
     else:
         form = RegistrationForm()
  
     return render(request,
     'registration/register.html',
-    {'form': form},context_instance=RequestContext(request)
+    {'form': form}
     )
  
 def register_success(request):
@@ -66,6 +66,7 @@ def home(request):
         for item in cart :
             customer = Customer.objects.get(pk=item.user.user_id)
             if customer.contact == usr.username and item.status == "Added to cart":
+                print "Checking ",customer.contact," ",usr.username
                 fitem=FoodItems.objects.get(pk=item.food.food_id)
                 ritem=Restaurant.objects.get(pk=item.rest.rest_id)
                 total=total+item.quantity*item.amount
@@ -171,18 +172,17 @@ def checkout(request):
     for cust in customers:
         if usr.username == cust.contact:
             ordered_cust = cust
-
     if request.method == 'POST':
         form = AddressForm(request.POST)
         if form.is_valid():
             address = form.cleaned_data
             if ordered_cust != None:
                 #filterargs = { 'user' : ordered_cust , 'status' : "Added to cart"}
-                orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id, status__exact = 'Added to cart')
-                for order in orders:
-                    order.address = address
-                    order.status = "Confirmed"
+                CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id, status__exact = 'Added to cart').update(address = address, status = 'Confirmed')
                 return render(request, 'success.html')
+        else:
+            form = AddressForm()
+            return render(request, 'checkout.html', {'cart' : crt, 'total' : total, 'form':form})
     else:
         return render(request, 'checkout.html', {'cart' : crt, 'total' : total, 'form':form})
 
