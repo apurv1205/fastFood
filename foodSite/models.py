@@ -13,9 +13,8 @@ class Customer(models.Model):
 	email=models.CharField(max_length=100,null=True)
 	cantact=models.CharField(max_length=20,null=True)
 
-	#def __str__(self):
-    #	return self.title
-
+	def __str__(self):
+		return name
 
 class Restaurant(models.Model):
 	rest_id=models.IntegerField(primary_key=True)
@@ -26,6 +25,9 @@ class Restaurant(models.Model):
 	email=models.CharField(max_length=100,null=True)
 	rating=models.FloatField(null=True)
 
+	def __str__(self):
+		return str(self.rest_id)
+
 class FoodItems(models.Model):
 	food_id=models.IntegerField(null=True)
 	rest=models.ForeignKey(Restaurant,null=True,on_delete=models.CASCADE)
@@ -35,6 +37,9 @@ class FoodItems(models.Model):
 	cuisine=models.CharField(max_length=10,null=True)
 	category=models.CharField(max_length=20,null=True)
 
+	def __str__(self):
+		return name
+
 class Reviews(models.Model):
 	user_id=models.ForeignKey(Customer,on_delete=models.CASCADE,null=True)
 	rest=models.ForeignKey(Restaurant,on_delete=models.CASCADE,null=True)
@@ -42,6 +47,8 @@ class Reviews(models.Model):
 	rating=models.FloatField(null=True)
 	review=models.TextField(null=True)
 
+	def __str__(self):
+		return str(review)
 
 class CurrentOrders(models.Model):
 	order_id=models.IntegerField(null=True)
@@ -55,6 +62,9 @@ class CurrentOrders(models.Model):
 	def place_order(self):
 		self.order_timestamp=timezone.now()
 		self.save()
+
+	def __str__(self):
+		return str(order_id)
 
 
 class OrderDetails(models.Model):

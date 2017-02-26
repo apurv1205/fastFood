@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import FoodItems,Restaurant
 
 class FoodItemsAdmin(admin.ModelAdmin):
-	model = Restaurant
+	model = FoodItems
 	list_display = ['name','get_name']
 
 	def get_name(self,obj):
