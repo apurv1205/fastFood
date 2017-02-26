@@ -33,7 +33,8 @@ def register(request):
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            return HttpResponseRedirect('success/')
+            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
+            else : return render_to_response("rest_home.html", RequestContext(request, {}))
     else:
         form = RegistrationForm()
  
@@ -55,13 +56,12 @@ def logout_page(request):
 def home(request):
 
     menu = FoodItems.objects.all()
-    restaurants = Restaurant.objects.all()
+    restaurants = Restaurant.objects.all().order_by('name')
     cart = CurrentOrders.objects.all()
     usr=request.user
     crt=[]
     total=0
-    if usr.last_name == "C" :
-    
+    if usr.last_name == "C" :    
         for item in cart :
             customer = Customer.objects.get(pk=item.user.user_id)
             if customer.contact == usr.username and item.status == "Added to cart":
@@ -95,6 +95,8 @@ def home(request):
         )
     else : 
         lst=[]
+        curr_rest=Restaurant.objects.all()
+        cur_rest=curr_rest[0]
         for rest in restaurants :
             if usr.username==rest.contact :
                 cur_rest=Restaurant.objects.get(pk=rest.rest_id)
@@ -102,17 +104,30 @@ def home(request):
             if item.rest_id==cur_rest.rest_id :
                 fitem=FoodItems.objects.get(pk=item.food.food_id)
                 lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount])
+        '''
+        if request.method == "POST":
+            print "hm"
+            form = PostForm(request.POST)
+            if form.is_valid():
+                fooditm = form.save(commit=False)
+                fooditm.rest = cur_rest
+                fooditm.save()
+                print "ok"
+                return render_to_response("home.html", RequestContext(request, {}))
+        else:
+            form = PostForm()
+        '''
         return render_to_response(
-        'rest_home.html', {'orders' : lst,'user': usr}
+        'rest_home.html', {'form': form , 'orders' : lst,'user': usr}
         )
 
 def rest_detail(request, pk):
     menu = FoodItems.objects.all()
     items=[]
     for item in menu:
+        print item
         if str(item.rest) == str(pk) : 
             items.append(item)
-    rest = get_object_or_404(Restaurant, pk=pk)
     return render(request, 'rest_detail.html', {'items': items})
 
 def cart(request, pk):
@@ -122,12 +137,15 @@ def cart(request, pk):
     user=request.user
     for cust in customers :
         if user.username == cust.contact :
+
             flag=False
             for thing in orders :
                 if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id:
                     CurrentOrders.objects.filter(pk=thing.pk).update(quantity=thing.quantity + 1)
                     flag=True
+
             if flag==False :
+                print "here"
                 C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
                 C.place_order()
     return render(request, 'cart.html', {'item': item})

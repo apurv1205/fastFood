@@ -1,8 +1,14 @@
 import re
 from django import forms
+from .models import *
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
- 
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = FoodItems
+        fields = ('name', 'price','cuisine','category')
+
 class RegistrationForm(forms.Form):
     CHOICES = (('1', 'Customer',), ('2', 'Restaurant',))
 
