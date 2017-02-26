@@ -4,10 +4,11 @@ from .models import *
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = FoodItems
-        fields = ('name', 'price','cuisine','category')
+class PostForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Name"))
+    price = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_length=30)), label=_("Price"))
+    cuisine = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Cuisine"))
+    category = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Category"))
 
 class RegistrationForm(forms.Form):
     CHOICES = (('1', 'Customer',), ('2', 'Restaurant',))

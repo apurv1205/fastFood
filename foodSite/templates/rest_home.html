@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{% endblock %}
 {% block content %}
+<script>
+    {% for msg in message %}alert('{{ msg }}{{item}}');
+    {%endfor%}
+</script>
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
     <h3>Restaurant name : {{user.first_name}} </h3>
     <h3>Current Orders : </h3>
@@ -11,6 +15,7 @@
 	    <th>Status</th>
 	    <th>Quantity</th>
 	    <th>Price</th> 
+	    <th>Change Status</th>
 	</tr>
 	{% for c in orders%}
 		<tr>
@@ -22,5 +27,12 @@
 		</tr>
 	{%endfor%}
 </table>
-<h1><a class="right" href="add_item/">Add New Item</a></h1>
+<h3>Add New Items</h3>
+<form method="post" action=".">
+        <table border="0">
+            {{ form.as_table }}
+        </table>
+   	<input type="submit" value="Register" />
+</form>
+
 {% endblock %}

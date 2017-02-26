@@ -7,6 +7,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from foodSite.models import *
 import editdistance
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 @csrf_protect
 def register(request):
@@ -15,7 +18,6 @@ def register(request):
         if form.is_valid():
             stat = form.cleaned_data['choice_field']
             status="C";
-            print stat,"1"
             if str(stat) == "1" : 
                 status="C"
                 C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
@@ -33,93 +35,98 @@ def register(request):
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
-            else : return render_to_response("rest_home.html", RequestContext(request, {}))
+            return render(request,
+    'registration/success.html',
+    {'form': form}
+    )
+#            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
+#           else : return render_to_response("rest_home.html", RequestContext(request, {}))
     else:
         form = RegistrationForm()
  
     return render(request,
     'registration/register.html',
-    {'form': form},context_instance=RequestContext(request)
+    {'form': form}
     )
  
 def register_success(request):
     return render_to_response(
-    'registration/success.html',{'user':request.user},context_instance=RequestContext(request)
+    'registration/success.html',{'user':request.user}
     )
  
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
- 
+@csrf_exempt
 @login_required
 def home(request):
-
     menu = FoodItems.objects.all()
     restaurants = Restaurant.objects.all().order_by('name')
     cart = CurrentOrders.objects.all()
     usr=request.user
     crt=[]
     total=0
-    if usr.last_name == "C" :    
-        for item in cart :
-            customer = Customer.objects.get(pk=item.user.user_id)
-            if customer.contact == usr.username and item.status == "Added to cart":
-                fitem=FoodItems.objects.get(pk=item.food.food_id)
-                ritem=Restaurant.objects.get(pk=item.rest.rest_id)
-                total=total+item.quantity*item.amount
-                crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
-        
-        #search by category
-        if request.method == 'GET':
-            category_output=[]
-            search_query = request.GET.get('search_box', None)
-            if search_query!=None:
-                for item in menu:
-                    a = item.category.lower()
-                    b = search_query.lower()
-                    if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
-                       category_output.append(item)
-
-            search_output=[]
-            search_query = request.GET.get('search_box1', None)
-            if search_query!=None:
-                for item in menu:
-                    a = item.name.lower()
-                    b = search_query.lower()
-                    if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
-                       search_output.append(item)
-
-        return render_to_response(
-        'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
-        )
-    else : 
-        lst=[]
-        curr_rest=Restaurant.objects.all()
-        cur_rest=curr_rest[0]
-        for rest in restaurants :
-            if usr.username==rest.contact :
-                cur_rest=Restaurant.objects.get(pk=rest.rest_id)
-        for item in cart :
-            if item.rest_id==cur_rest.rest_id :
-                fitem=FoodItems.objects.get(pk=item.food.food_id)
-                lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount])
-        '''
-        if request.method == "POST":
-            print "hm"
-            form = PostForm(request.POST)
-            if form.is_valid():
-                fooditm = form.save(commit=False)
-                fooditm.rest = cur_rest
-                fooditm.save()
-                print "ok"
-                return render_to_response("home.html", RequestContext(request, {}))
-        else:
+    curr_rest=Restaurant.objects.all()
+    cur_rest=curr_rest[0]
+    form = PostForm()
+    lst=[]
+    for rest in restaurants :
+        if usr.username==rest.contact :
+            cur_rest=Restaurant.objects.get(pk=rest.rest_id)
+    for item in cart :
+        if item.rest_id==cur_rest.rest_id :
+            fitem=FoodItems.objects.get(pk=item.food.food_id)
+            lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount])
+    if request.method == "POST":
+        print "ok"
+        form = PostForm(request.POST)
+        if form.is_valid():
+            C=FoodItems(name=form.cleaned_data['name'],rest=cur_rest,price=form.cleaned_data['price'],photo="ok",cuisine=form.cleaned_data['cuisine'],category=form.cleaned_data['category'])
+            C.save()
             form = PostForm()
-        '''
-        return render_to_response(
-        'rest_home.html', { 'orders' : lst,'user': usr}
-        )
+            message=[]
+            message.append("Added new item : ")
+            return render_to_response(
+    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name }
+    )
+
+    else:
+        if usr.last_name == "C" :    
+            for item in cart :
+                customer = Customer.objects.get(pk=item.user.user_id)
+                if customer.contact == usr.username and item.status == "Added to cart":
+                    fitem=FoodItems.objects.get(pk=item.food.food_id)
+                    ritem=Restaurant.objects.get(pk=item.rest.rest_id)
+                    total=total+item.quantity*item.amount
+                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
+            
+            #search by category
+            if request.method == 'GET':
+                category_output=[]
+                search_query = request.GET.get('search_box', None)
+                if search_query!=None:
+                    for item in menu:
+                        a = item.category.lower()
+                        b = search_query.lower()
+                        if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                           category_output.append(item)
+
+                search_output=[]
+                search_query = request.GET.get('search_box1', None)
+                if search_query!=None:
+                    for item in menu:
+                        a = item.name.lower()
+                        b = search_query.lower()
+                        if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                           search_output.append(item)
+
+            return render_to_response(
+            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
+            )
+        else : 
+            return render_to_response(
+            'rest_home.html', {'form' : form , 'orders' : lst,'user': usr}
+            )
 
 def rest_detail(request, pk):
     menu = FoodItems.objects.all()

@@ -47,9 +47,6 @@ class Reviews(models.Model):
 	rating=models.FloatField(null=True)
 	review=models.TextField(null=True)
 
-	def __str__(self):
-			return str(review)
-
 class CurrentOrders(models.Model):
 	food=models.ForeignKey(FoodItems,null=True,on_delete=models.PROTECT)
 	quantity=models.IntegerField(null=True)
