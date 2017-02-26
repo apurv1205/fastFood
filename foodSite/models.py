@@ -13,8 +13,7 @@ class Customer(models.Model):
 	contact=models.CharField(max_length=20,null=True)
 
 	def __str__(self):
-    		return str(self.user_id)
-
+    	return str(self.user_id)
 
 class Restaurant(models.Model):
 	rest_id=models.IntegerField(primary_key=True)
@@ -26,7 +25,7 @@ class Restaurant(models.Model):
 	rating=models.FloatField(null=True)
 
 	def __str__(self):
-			return str(self.rest_id)
+		return str(self.rest_id)
 
 class FoodItems(models.Model):
 	food_id=models.IntegerField(primary_key=True)
@@ -38,7 +37,7 @@ class FoodItems(models.Model):
 	category=models.CharField(max_length=20,null=True)
 
 	def __str__(self):
-			return str(self.food_id)
+		return str(self.food_id)
 
 class Reviews(models.Model):
 	user_id=models.ForeignKey(Customer,on_delete=models.CASCADE,null=True)
@@ -47,6 +46,8 @@ class Reviews(models.Model):
 	rating=models.FloatField(null=True)
 	review=models.TextField(null=True)
 
+	def __str__(self):
+		return str(review)
 
 class CurrentOrders(models.Model):
 	food=models.ForeignKey(FoodItems,null=True,on_delete=models.PROTECT)
@@ -62,6 +63,9 @@ class CurrentOrders(models.Model):
 	def place_order(self):
 		self.order_timestamp=timezone.now()
 		self.save()
+	def __str__(self):
+		return str(order_id)
+
 
 class OrderHistory(models.Model):
 	food=models.ForeignKey(FoodItems,null=True,on_delete=models.PROTECT)

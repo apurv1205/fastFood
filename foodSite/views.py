@@ -3,10 +3,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response,render,get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from foodSite.models import *
 import editdistance
+
+#cart
+
+from carton.cart import Cart
+from .models import FoodItems
+
+def add_to_cart(request, food_id, quantity):
+    cart = Cart(request.session)
+    product = FoodItems.objects.get(food_id)
+    cart.add(product, product.price, quantity)
+    return HttpResponse("Added")
+
+def show_cart(request):
+    return render_to_response('frontend/shop-cart/cart.html', {'cart' : cart}
+    )
 
 @csrf_protect
 def register(request):
