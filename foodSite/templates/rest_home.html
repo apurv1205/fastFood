@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
+    <h3>Restaurant name : {{user.first_name}} </h3>
+    <h3>Current Orders : </h3>
+    <table style="width:70%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Customer Name</th>
+	    <th>Status</th>
+	    <th>Quantity</th>
+	    <th>Price</th> 
+	</tr>
+	{% for c in orders%}
+		<tr>
+			<td>{{c.0}}</td>
+		    <td>{{c.1}}</td>
+		    <td>{{c.2}}</td>
+		    <td>{{c.3}}</td>
+		    <td>{{c.4}}</td> 
+		</tr>
+	{%endfor%}
+</table>
+{% endblock %}

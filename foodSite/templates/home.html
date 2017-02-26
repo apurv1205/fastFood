@@ -44,11 +44,7 @@
 </form>
 {% for item in category_output %}
         <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
-    </tr>
-    <br>
-    <tr>
-    {% endif %}
+
 {% endfor %}
 <form type="get" action="." style="margin: 0">
     <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
@@ -56,10 +52,5 @@
 </form>
 {% for item in search_output %}
         <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-    {% if not forloop.last and forloop.counter == 3 or forloop.counter == 6 %}
-    </tr>
-    <br>
-    <tr>
-    {% endif %}
 {% endfor %}
 {% endblock %}
