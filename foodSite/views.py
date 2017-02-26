@@ -15,13 +15,15 @@ def register(request):
         if form.is_valid():
             stat = form.cleaned_data['choice_field']
             status="C";
-            if stat is "1" : 
+            print stat,"1"
+            if str(stat) == "1" : 
                 status="C"
-                C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=form.cleaned_data['username'])
+                C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
                 C.save()
-            elif stat is "2": 
+
+            elif str(stat) == "2": 
                 status="R"
-                R=Restaurant(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=form.cleaned_data['username'])
+                R=Restaurant(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
                 R.save() 
 
             user = User.objects.create_user(
@@ -54,6 +56,17 @@ def home(request):
 
     menu = FoodItems.objects.all()
     restaurants = Restaurant.objects.all()
+    cart = CurrentOrders.objects.all()
+    usr=request.user
+    crt=[]
+    total=0
+    for item in cart :
+        customer = Customer.objects.get(pk=item.user.user_id)
+        if customer.contact == usr.username and item.status == "Added to cart":
+            fitem=FoodItems.objects.get(pk=item.food.food_id)
+            ritem=Restaurant.objects.get(pk=item.rest.rest_id)
+            total=total+item.quantity*item.amount
+            crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
     
     #search by category
     
@@ -77,7 +90,7 @@ def home(request):
                    search_output.append(item)
 
     return render_to_response(
-    'home.html', { 'user': request.user, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
+    'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
     )
 
 def rest_detail(request, pk):
@@ -92,9 +105,16 @@ def rest_detail(request, pk):
 def cart(request, pk):
     item = get_object_or_404(FoodItems, pk=pk)
     customers = Customer.objects.all()
+    orders=CurrentOrders.objects.all()
     user=request.user
     for cust in customers :
         if user.username == cust.contact :
-            C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=amount+item.price)
-            C.place_order()
+            flag=False
+            for thing in orders :
+                if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id:
+                    CurrentOrders.objects.filter(pk=thing.pk).update(quantity=thing.quantity + 1)
+                    flag=True
+            if flag==False :
+                C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
+                C.place_order()
     return render(request, 'cart.html', {'item': item})

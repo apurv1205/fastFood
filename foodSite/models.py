@@ -8,13 +8,12 @@ from django.utils import timezone
 class Customer(models.Model):
 	user_id=models.IntegerField(primary_key=True)
 	name=models.CharField(max_length=100,null=True)
-	username=models.CharField(max_length=100,null=True)
 	passwd=models.CharField(max_length=100,null=True)
 	email=models.CharField(max_length=100,null=True)
-	cantact=models.CharField(max_length=20,null=True)
+	contact=models.CharField(max_length=20,null=True)
 
-	#def __str__(self):
-    #	return self.title
+	def __str__(self):
+    		return str(self.user_id)
 
 
 class Restaurant(models.Model):
@@ -38,6 +37,9 @@ class FoodItems(models.Model):
 	cuisine=models.CharField(max_length=10,null=True)
 	category=models.CharField(max_length=20,null=True)
 
+	def __str__(self):
+			return str(self.food_id)
+
 class Reviews(models.Model):
 	user_id=models.ForeignKey(Customer,on_delete=models.CASCADE,null=True)
 	rest=models.ForeignKey(Restaurant,on_delete=models.CASCADE,null=True)
@@ -47,7 +49,9 @@ class Reviews(models.Model):
 
 
 class CurrentOrders(models.Model):
-	order_id=models.IntegerField(null=True)
+	food=models.ForeignKey(FoodItems,null=True,on_delete=models.PROTECT)
+	quantity=models.IntegerField(null=True)
+	order_id=models.IntegerField(primary_key=True)
 	user=models.ForeignKey(Customer,null=True,on_delete=models.PROTECT)
 	rest=models.ForeignKey(Restaurant,null=True,on_delete=models.PROTECT)
 	status=models.CharField(max_length=10,null=True)
@@ -59,14 +63,9 @@ class CurrentOrders(models.Model):
 		self.order_timestamp=timezone.now()
 		self.save()
 
-
-class OrderDetails(models.Model):
-	order=models.ForeignKey(Customer,null=True,on_delete=models.PROTECT)
+class OrderHistory(models.Model):
 	food=models.ForeignKey(FoodItems,null=True,on_delete=models.PROTECT)
 	quantity=models.IntegerField(null=True)
-
-
-class OrderHistory(models.Model):
 	order_id=models.IntegerField(null=True)
 	user=models.ForeignKey(Customer,null=True,on_delete=models.CASCADE)
 	rest=models.ForeignKey(Restaurant,null=True,on_delete=models.CASCADE)

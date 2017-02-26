@@ -2,9 +2,33 @@
 {% block title %}{% endblock %}
 {% block content %}
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
-    <p>Food delivery system!!!</p>
-
-<h3>Select restaurant<h3>
+<h3>Current items in cart</h3>
+<table style="width:70%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant</th>
+	    <th>Status</th>
+	    <th>Quantity</th>
+	    <th>Price</th> 
+	</tr>
+	{% for c in cart%}
+		<tr>
+			<td >{{c.0}}</td>
+		    <td>{{c.1}}</td>
+		    <td>{{c.4}}</td>
+		    <td>{{c.3}}</td>
+		    <td>{{c.2}}</td> 
+		</tr>
+	{%endfor%}
+		<tr>
+			<td ></td>
+		    <td></td>
+		    <td></td>
+		    <td>Total Amount</td>
+		    <td>{{total}}</td> 
+		</tr>
+</table>
+<h3>Select restaurant</h3>
 <table>
 {% for rest in restaurants %}
 	<tr>
