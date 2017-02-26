@@ -39,12 +39,12 @@ def register(request):
  
     return render(request,
     'registration/register.html',
-    {'form': form}
+    {'form': form},context_instance=RequestContext(request)
     )
  
 def register_success(request):
     return render_to_response(
-    'registration/success.html',{'user':request.user}
+    'registration/success.html',{'user':request.user},context_instance=RequestContext(request)
     )
  
 def logout_page(request):

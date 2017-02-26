@@ -64,7 +64,7 @@ class CurrentOrders(models.Model):
 		self.order_timestamp=timezone.now()
 		self.save()
 	def __str__(self):
-		return str(order_id)
+		return str(self.order_id)
 
 
 class OrderHistory(models.Model):
