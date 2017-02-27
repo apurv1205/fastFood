@@ -76,7 +76,9 @@ def home(request):
     for item in cart :
         if item.rest_id==cur_rest.rest_id :
             fitem=FoodItems.objects.get(pk=item.food.food_id)
-            lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount])
+            lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk])
+
+    enumerate_a=enumerate(lst)
     if request.method == "POST":
         print "ok"
         form = PostForm(request.POST)
@@ -87,7 +89,7 @@ def home(request):
             message=[]
             message.append("Added new item : ")
             return render_to_response(
-    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name }
+    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name ,'enumerate_a':enumerate_a}
     )
 
     else:
@@ -129,6 +131,15 @@ def home(request):
             )
 
 def rest_detail(request, pk):
+    menu = FoodItems.objects.all()
+    items=[]
+    for item in menu:
+        print item
+        if str(item.rest) == str(pk) : 
+            items.append(item)
+    return render(request, 'rest_detail.html', {'items': items})
+
+def change_status(request, pk):
     menu = FoodItems.objects.all()
     items=[]
     for item in menu:

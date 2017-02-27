@@ -17,13 +17,14 @@
 	    <th>Price</th> 
 	    <th>Change Status</th>
 	</tr>
-	{% for c in orders%}
+	{% for c in orders %}
 		<tr>
 			<td>{{c.0}}</td>
 		    <td>{{c.1}}</td>
 		    <td>{{c.2}}</td>
 		    <td>{{c.3}}</td>
 		    <td>{{c.4}}</td> 
+		    <td><a href="{% url 'change_status' pk=c.5 %}">Change Status</a></td>
 		</tr>
 	{%endfor%}
 </table>

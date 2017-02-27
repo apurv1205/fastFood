@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^register/home/$', views.home,name="home"),
     url(r'^home/$', views.home,name="home"),
     url(r'^rest/(?P<pk>\d+)/$', views.rest_detail, name='rest_detail'),
+    url(r'^change_status/(?P<pk>\d+)/$', views.change_status, name='change_status'),
     url(r'^item/(?P<pk>\d+)/$', views.cart, name='cart'),
     url(r'^checkout/$', views.checkout, name = 'checkout'),
     url(r'^confirm/$', views.confirm_order, name= 'confirm_order')
