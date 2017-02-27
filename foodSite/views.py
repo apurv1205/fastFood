@@ -230,7 +230,11 @@ def current_orders(request):
         if user.username == cust.contact:
             ordered_cust = cust
     if ordered_cust!=None:
-        print "here ",str(ordered_cust.user_id)
-        orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
-        print "Orders" ,len(orders)
+        orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders=[]
+        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
+
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
