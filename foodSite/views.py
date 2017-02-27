@@ -74,10 +74,14 @@ def home(request):
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)
+
+    cart1=[]
     for item in cart :
-        if item.rest_id==cur_rest.rest_id :
-            fitem=FoodItems.objects.get(pk=item.food.food_id)
-            lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk])
+        if item.rest.rest_id==cur_rest.rest_id :
+            if item.status=="Added to cart" : cart1.append(item)
+            else : 
+                fitem=FoodItems.objects.get(pk=item.food.food_id)
+                lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk,item.address])
 
     if request.method == "POST":
         #print "ok"
@@ -210,7 +214,7 @@ def checkout(request):
     if request.method == 'POST':
         form = AddressForm(request.POST)
         if form.is_valid():
-            address = form.cleaned_data
+            address = form.cleaned_data['address']
             if ordered_cust != None:
                 #filterargs = { 'user' : ordered_cust , 'status' : "Added to cart"}
                 CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id, status__exact = 'Added to cart').update(address = address, status = 'Confirmed')
