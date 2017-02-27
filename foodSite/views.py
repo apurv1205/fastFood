@@ -100,7 +100,8 @@ def home(request):
                     fitem=FoodItems.objects.get(pk=item.food.food_id)
                     ritem=Restaurant.objects.get(pk=item.rest.rest_id)
                     total=total+item.quantity*item.amount
-                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
+                    print "Order primary" ,str(item.pk)
+                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
             
             #search by category
             if request.method == 'GET':
@@ -266,5 +267,24 @@ def cancel_order(request,pk):
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
+        
         return HttpResponseRedirect("/current_orders/")
         # remove from current orders and add to order history
+
+@login_required
+def inc_count(request,pk):
+    print "Increment quantity"
+    q = CurrentOrders.objects.get(order_id__exact = pk).quantity
+    CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q+1)
+    return HttpResponseRedirect("/home/")
+
+@login_required
+def dec_count(request,pk):
+    print "Decrement quantity"
+    q = CurrentOrders.objects.get(order_id__exact = pk).quantity
+    if q==0:
+        messages.info(request,"Invalid attempt!")
+        return HttpResponseRedirect("/home/")
+    else:
+        CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q-1)
+        return HttpResponseRedirect("/home/")
