@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response,render,get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
+from django.contrib import messages
 from foodSite.models import *
 import editdistance
 from django.views.decorators.csrf import csrf_exempt
@@ -177,7 +178,9 @@ def checkout(request):
             ritem=Restaurant.objects.get(pk=item.rest.rest_id)
             total=total+item.quantity*item.amount
             crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
-    
+    if len(crt)==0:
+        messages.add_message(request,messages.ERROR,"Empty cart!")
+        return HttpResponseRedirect("/home/")
     ordered_cust=None
     customers =  Customer.objects.all()
     for cust in customers:
