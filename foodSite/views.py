@@ -140,13 +140,8 @@ def rest_detail(request, pk):
     return render(request, 'rest_detail.html', {'items': items})
 
 def change_status(request, pk):
-    menu = FoodItems.objects.all()
-    items=[]
-    for item in menu:
-        print item
-        if str(item.rest) == str(pk) : 
-            items.append(item)
-    return render(request, 'rest_detail.html', {'items': items})
+    order = get_object_or_404(CurrentOrders, pk=pk)
+    return render(request, 'change_status.html', {'order': order})
 
 def cart(request, pk):
     item = get_object_or_404(FoodItems, pk=pk)
