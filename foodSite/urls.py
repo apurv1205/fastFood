@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^change_status/(?P<pk>\d+)/$', views.change_status, name='change_status'),
     url(r'^item/(?P<pk>\d+)/$', views.cart, name='cart'),
     url(r'^checkout/$', views.checkout, name = 'checkout'),
-    url(r'^current_orders/$', views.current_orders, name='current_orders')
+    url(r'^current_orders/$', views.current_orders, name='current_orders'),
+    url(r'^cancel_order/(?P<pk>\d+)/$', views.cancel_order, name='cancel_order')
 ]

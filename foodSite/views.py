@@ -228,3 +228,13 @@ def current_orders(request):
         orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
         print "Orders" ,len(orders)
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
+
+@login_required
+def cancel_order(request,pk):
+    order = CurrentOrders.objects.get(order_id__exact = pk)
+    if order.status != "Added to cart" and order.status != "Confirmed":
+        message = "Cannot cancel order as restaurant has begun process!"
+        return render(request, 'view_orders.html',{'orders':orders, 'user' : user, 'message' : message})
+    else:
+        CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
+        # remove from current orders and add to order history
