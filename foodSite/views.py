@@ -135,7 +135,7 @@ def rest_detail(request, pk):
     items=[]
     for item in menu:
         #print item
-        if str(item.rest) == str(pk) : 
+        if str(item.rest.rest_id) == str(pk) : 
             items.append(item)
     return render(request, 'rest_detail.html', {'items': items})
 
