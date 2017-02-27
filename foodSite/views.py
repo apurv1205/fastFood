@@ -153,8 +153,14 @@ def change_status(request, pk):
             elif str(stat)=='4' : stats='Delivered'
             CurrentOrders.objects.filter(pk=order.pk).update(status=stats)
             order = get_object_or_404(CurrentOrders, pk=pk)
+            if str(stat)=='4' : 
+                C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
+                C.save()
+                order.delete()
+                stat="Deliverd and deleted from current orders"
         message=[]
         message.append('Order has been updated to ')
+
         return render(request, 'change_status.html', {'order': order,'form':form,'message':message,'stats':stats})
     else :
         form = StatusForm() 
@@ -170,7 +176,7 @@ def cart(request, pk):
 
             flag=False
             for thing in orders :
-                if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id:
+                if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id and thing.status=="Added to cart":
                     CurrentOrders.objects.filter(pk=thing.pk).update(quantity=thing.quantity + 1)
                     flag=True
 
@@ -224,9 +230,13 @@ def current_orders(request):
         if user.username == cust.contact:
             ordered_cust = cust
     if ordered_cust!=None:
-        print "here ",str(ordered_cust.user_id)
-        orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
-        print "Orders" ,len(orders)
+        orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders=[]
+        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
+
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
 
 @login_required

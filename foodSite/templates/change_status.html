@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+ <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
 <script>
     {% for msg in message %}alert('{{ msg }}{{stats}}');
     {%endfor%}
