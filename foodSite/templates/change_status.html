@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script>
+    {% for msg in message %}alert('{{ msg }}{{stats}}');
+    {%endfor%}
+</script>
     <div class="change">
         <h1>{{ order.food.name }}</h1>
             <h3>Current Orders : </h3>
@@ -20,4 +24,13 @@
 		    <td>{{ order.amount }}</td>
 		</tr>
     </div>
+    </table>
+
+    <h3>Change Order Status</h3>
+	<form method="post" action=".">
+	        <table border="0">
+	            {{ form.as_table }}
+	        </table>
+	   	<input type="submit" value="Register" />
+	</form>
 {% endblock %}
