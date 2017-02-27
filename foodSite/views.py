@@ -39,8 +39,6 @@ def register(request):
     'registration/success.html',
     {'form': form}
     )
-#            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
-#           else : return render_to_response("rest_home.html", RequestContext(request, {}))
     else:
         form = RegistrationForm()
  
@@ -252,28 +250,14 @@ def cancel_order(request,pk):
     print order.status
     if order.status != "Added to cart" and order.status != "Confirmed":
         message = ["Cannot cancel order as restaurant has begun process!"]
-        user = request.user
-        ordered_cust=None
-        customers =  Customer.objects.all()
-        for cust in customers:
-            if user.username == cust.contact:
-                ordered_cust = cust
-        if ordered_cust!=None:
-            orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
-            orders=[]
-            ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
-            for item in orders1 :
-                if item not in ordersNot :
-                    orders.append(item)
-            #return render(request, 'view_orders.html',{'order':orders, 'user' : user, 'message' : message})
-            messages.info(request,"Your order cannot be cancelled as restaurant has begun process!")
-            return HttpResponseRedirect("/home/")
+        
+        return HttpResponseRedirect("/current_orders/")
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
-        
-        return HttpResponseRedirect("/current_orders/")
         # remove from current orders and add to order history
+        return HttpResponseRedirect("/current_orders/")
+        
 
 @login_required
 def inc_count(request,pk):
@@ -287,7 +271,7 @@ def dec_count(request,pk):
     print "Decrement quantity"
     q = CurrentOrders.objects.get(order_id__exact = pk).quantity
     if q==0:
-        messages.info(request,"Invalid attempt!")
+        #messages.info(request,"Invalid attempt!")
         return HttpResponseRedirect("/home/")
     else:
         CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q-1)
