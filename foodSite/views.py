@@ -105,7 +105,8 @@ def home(request):
                     fitem=FoodItems.objects.get(pk=item.food.food_id)
                     ritem=Restaurant.objects.get(pk=item.rest.rest_id)
                     total=total+item.quantity*item.amount
-                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
+                    print "Order primary" ,str(item.pk)
+                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
             
             #search by category
             if request.method == 'GET':
@@ -245,6 +246,25 @@ def current_orders(request):
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
 
 @login_required
+def order_history_user(request):
+    user = request.user
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    for cust in customers:
+        if user.username == cust.contact:
+            ordered_cust = cust
+    if ordered_cust!=None:
+        orders1 = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders=[]
+        ordersNot = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id,status="Cancelled")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
+
+        return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
+
+
+@login_required
 def cancel_order(request,pk):
     print "Cancel ",str(pk)
     order = CurrentOrders.objects.get(order_id__exact = pk)
@@ -271,6 +291,10 @@ def cancel_order(request,pk):
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
+        order=CurrentOrders.objects.get(order_id__exact=pk)
+        C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
+        C.save()
+        order.delete()
         return HttpResponseRedirect("/current_orders/")
         # remove from current orders and add to order history
 
@@ -297,3 +321,21 @@ def order_history(request):
             ordered_cust = cust
 
     return render(request, 'order_history.html', {'cart' : crt, 'total' : total})
+
+@login_required
+def inc_count(request,pk):
+    print "Increment quantity"
+    q = CurrentOrders.objects.get(order_id__exact = pk).quantity
+    CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q+1)
+    return HttpResponseRedirect("/home/")
+
+@login_required
+def dec_count(request,pk):
+    print "Decrement quantity"
+    q = CurrentOrders.objects.get(order_id__exact = pk).quantity
+    if q==0:
+        messages.info(request,"Invalid attempt!")
+        return HttpResponseRedirect("/home/")
+    else:
+        CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q-1)
+        return HttpResponseRedirect("/home/")
