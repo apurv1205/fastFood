@@ -4,6 +4,10 @@ from .models import *
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+class StatusForm(forms.Form):
+    CHOICES = (('1', 'Confirmed',), ('2', 'Preparing',),('3', 'Out for delivery',), ('4', 'Delivered',))
+    choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES,label=_("Select status"))
+
 class PostForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Name"))
     price = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_length=30)), label=_("Price"))

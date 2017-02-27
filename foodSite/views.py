@@ -78,7 +78,6 @@ def home(request):
             fitem=FoodItems.objects.get(pk=item.food.food_id)
             lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk])
 
-    enumerate_a=enumerate(lst)
     if request.method == "POST":
         print "ok"
         form = PostForm(request.POST)
@@ -89,7 +88,7 @@ def home(request):
             message=[]
             message.append("Added new item : ")
             return render_to_response(
-    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name ,'enumerate_a':enumerate_a}
+    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name}
     )
 
     else:
@@ -139,9 +138,26 @@ def rest_detail(request, pk):
             items.append(item)
     return render(request, 'rest_detail.html', {'items': items})
 
+@csrf_exempt
 def change_status(request, pk):
     order = get_object_or_404(CurrentOrders, pk=pk)
-    return render(request, 'change_status.html', {'order': order})
+    if request.method == 'POST':
+        form = StatusForm(request.POST)
+        if form.is_valid():
+            stat = form.cleaned_data['choice_field']
+            stats=""
+            if str(stat)=='1' : stats='Confirmed'
+            elif str(stat)=='2' : stats='Preparing'
+            elif str(stat)=='3' : stats='Out for delivery'
+            elif str(stat)=='4' : stats='Delivered'
+            CurrentOrders.objects.filter(pk=order.pk).update(status=stats)
+            order = get_object_or_404(CurrentOrders, pk=pk)
+        message=[]
+        message.append('Order has been updated to ')
+        return render(request, 'change_status.html', {'order': order,'form':form,'message':message,'stats':stats})
+    else :
+        form = StatusForm() 
+        return render(request, 'change_status.html', {'order': order,'form':form})
 
 def cart(request, pk):
     item = get_object_or_404(FoodItems, pk=pk)
