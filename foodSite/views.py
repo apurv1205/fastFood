@@ -80,7 +80,7 @@ def home(request):
             lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk])
 
     if request.method == "POST":
-        print "ok"
+        #print "ok"
         form = PostForm(request.POST)
         if form.is_valid():
             C=FoodItems(name=form.cleaned_data['name'],rest=cur_rest,price=form.cleaned_data['price'],photo="ok",cuisine=form.cleaned_data['cuisine'],category=form.cleaned_data['category'])
@@ -134,8 +134,8 @@ def rest_detail(request, pk):
     menu = FoodItems.objects.all()
     items=[]
     for item in menu:
-        print item
-        if str(item.rest) == str(pk) : 
+        #print item
+        if str(item.rest.rest_id) == str(pk) : 
             items.append(item)
     return render(request, 'rest_detail.html', {'items': items})
 
@@ -181,7 +181,7 @@ def cart(request, pk):
                     flag=True
 
             if flag==False :
-                print "here"
+                #print "here"
                 C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
                 C.place_order()
     return render(request, 'cart.html', {'item': item})
@@ -201,7 +201,6 @@ def checkout(request):
             total=total+item.quantity*item.amount
             crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
     if len(crt)==0:
-        messages.add_message(request,messages.ERROR,"Empty cart!")
         return HttpResponseRedirect("/home/")
     ordered_cust=None
     customers =  Customer.objects.all()
@@ -223,35 +222,15 @@ def checkout(request):
         return render(request, 'checkout.html', {'cart' : crt, 'total' : total, 'form':form})
 
 @login_required
-def confirm_order(request):
-    usr=request.user
-    crt=[]
-    total = 0
-    cart1 = CurrentOrders.objects.all()
-    for item in cart1 :
-        customer = Customer.objects.get(pk=item.user.user_id)
-        if customer.contact == usr.username and item.status == "Added to cart":
-            fitem=FoodItems.objects.get(pk=item.food.food_id)
-            ritem=Restaurant.objects.get(pk=item.rest.rest_id)
-            total=total+item.quantity*item.amount
-            crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status])
-
+def current_orders(request):
+    user = request.user
     ordered_cust=None
+    customers =  Customer.objects.all()
     for cust in customers:
         if user.username == cust.contact:
             ordered_cust = cust
-
-    if request.method == 'POST':
-        form = AddressForm(request.POST)
-        if form.is_valid():
-            address = form.cleaned_data
-            if ordered_cust != None:
-                filterargs = { user : ordered_cust , status : "Added to cart"}
-                orders = CurrentOrders.objects.filter(**filterargs)
-                for order in orders:
-                    order.address = address
-                    order.status = "Confirmed"
-                return render(request, 'success.html')
-
-    return render(request,'home.html')
-
+    if ordered_cust!=None:
+        print "here ",str(ordered_cust.user_id)
+        orders = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
+        print "Orders" ,len(orders)
+        return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
