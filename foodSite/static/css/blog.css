@@ -46,7 +46,9 @@ h1, h2, h3, h4 {
 .post h1 a, .post h1 a:visited {
     color: #000000;
 }
+
 a.right {
+    font-size: 1.5em;
     position: absolute;
     top: 10px;
     right: 40px;

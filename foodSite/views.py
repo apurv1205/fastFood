@@ -39,8 +39,6 @@ def register(request):
     'registration/success.html',
     {'form': form}
     )
-#            if status=="C" : return render_to_response("home.html", RequestContext(request, {}))
-#           else : return render_to_response("rest_home.html", RequestContext(request, {}))
     else:
         form = RegistrationForm()
  
@@ -263,13 +261,8 @@ def order_history_user(request):
         if user.username == cust.contact:
             ordered_cust = cust
     if ordered_cust!=None:
-        orders1 = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id)
-        orders=[]
-        ordersNot = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id,status="Cancelled")
-        for item in orders1 :
-            if item not in ordersNot :
-                orders.append(item)
-
+        orders = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id)
+    
     return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
 
 
@@ -293,6 +286,7 @@ def cancel_order(request,pk):
     if order.status != "Added to cart" and order.status != "Confirmed":
         message.append("Cannot cancel order as restaurant has begun process!")
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user,'message' : message})
+
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
@@ -338,8 +332,10 @@ def inc_count(request,pk):
 def dec_count(request,pk):
     q = CurrentOrders.objects.get(order_id__exact = pk).quantity
     if q==0:
-        messages.info(request,"Invalid attempt!")
+        #messages.info(request,"Invalid attempt!")
         return HttpResponseRedirect("/home/")
     else:
         CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q-1)
+        if q==1:
+            CurrentOrders.objects.filter(order_id__exact = pk).delete()
         return HttpResponseRedirect("/home/")
