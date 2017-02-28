@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^logout/$', views.logout_page,name="logout_page"),
     url(r'^accounts/login/$', auth_views.login,name="login"), # If user is not login it will redirect to login page
     url(r'^register/$', views.register,name='register'),
+    url(r'^register_rest/$', views.register_rest,name='register_rest'),
     url(r'^register/success/$', views.register_success,name="register_success"),
     url(r'^register/home/$', views.home,name="home"),
     url(r'^home/$', views.home,name="home"),
@@ -21,5 +22,7 @@ urlpatterns = [
     url(r'^current_orders/$', views.current_orders, name='current_orders'),
     url(r'^cancel_order/(?P<pk>\d+)/$', views.cancel_order, name='cancel_order'),
     url(r'^inc_count/(?P<pk>\d+)/$', views.inc_count, name = 'inc_count'),
-    url(r'^dec_count/(?P<pk>\d+)/$', views.dec_count, name = 'dec_count')
+    url(r'^dec_count/(?P<pk>\d+)/$', views.dec_count, name = 'dec_count'),
+    url(r'^see_review/(?P<pk>\d+)/$', views.see_review, name = 'see_review'),
+    url(r'^review/(?P<pk>\d+)/$', views.review, name='review'),
 ]

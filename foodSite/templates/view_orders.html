@@ -10,6 +10,7 @@
     <h3>Current Orders : </h3>
     <table style="width:70%" >
 	<tr>
+		<th>Order Time</th>
 		<th>Food Item</th>
 	    <th>Restaurant Name</th>
 	    <th>Status</th>
@@ -19,6 +20,7 @@
 	</tr>
 	{% for c in orders%}
 		<tr>
+			<td>{{c.order_timestamp}}</td>
 			<td>{{c.food}}</td>
 		    <td>{{c.rest}}</td>
 		    <td>{{c.status}}</td></td>

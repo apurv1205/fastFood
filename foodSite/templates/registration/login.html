@@ -5,7 +5,9 @@
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
-    <a class="right" href="/register">Register</a>
+    <a class="right" href="/register">Register for User</a>
+    <div class="right2">|</div>
+    <a class="right1" href="/register_rest">Register for Restaurant</a>
     <form method="post" action=".">{% csrf_token %}
         <table border="0">
             <tr><th><label for="id_username">Contact:</label></th><td>{{ form.username }}</td></tr>

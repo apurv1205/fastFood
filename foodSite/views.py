@@ -10,23 +10,18 @@ from foodSite.models import *
 import editdistance
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddressForm
+from django.contrib.auth import authenticate, login
 
 @csrf_protect
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            stat = form.cleaned_data['choice_field']
-            status="C";
-            if str(stat) == "1" : 
-                status="C"
-                C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
-                C.save()
-
-            elif str(stat) == "2": 
-                status="R"
-                R=Restaurant(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
-                R.save() 
+            status="C"
+            username=form.cleaned_data['username']
+            password=form.cleaned_data['password1']
+            C=Customer(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']))
+            C.save()
 
             user = User.objects.create_user(
             first_name=form.cleaned_data['first_name'],
@@ -35,7 +30,10 @@ def register(request):
             password=form.cleaned_data['password1'],
             email=form.cleaned_data['email']
             )
-            return render(request,
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+        return render(request,
     'registration/success.html',
     {'form': form}
     )
@@ -46,7 +44,42 @@ def register(request):
     'registration/register.html',
     {'form': form}
     )
+
+@csrf_protect
+def register_rest(request):
+    if request.method == 'POST':
+        form = RegistrationRestForm(request.POST)
+        if form.is_valid():
+            status="R"
+            R=Restaurant(name=form.cleaned_data['first_name'],passwd=form.cleaned_data['password1'],email=form.cleaned_data['email'],contact=str(form.cleaned_data['username']),rating=3.0,address=form.cleaned_data['address'],website=form.cleaned_data['website'])
+            R.save() 
+            
+            username=form.cleaned_data['username']
+            password=form.cleaned_data['password1']
+            
+            user = User.objects.create_user(
+            first_name=form.cleaned_data['first_name'],
+            last_name=status,
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+            email=form.cleaned_data['email']
+            )
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+            return render(request,
+    'registration/success.html',
+    {'form': form}
+    )
+    else:
+        form = RegistrationRestForm()
  
+    return render(request,
+    'registration/register.html',
+    {'form': form}
+    )
+
+
 def register_success(request):
     return render_to_response(
     'registration/success.html',{'user':request.user}
@@ -61,7 +94,7 @@ def logout_page(request):
 def home(request):
     menu = FoodItems.objects.all()
     restaurants = Restaurant.objects.all().order_by('name')
-    cart = CurrentOrders.objects.all()
+    cart = CurrentOrders.objects.all().order_by('-order_timestamp')
     usr=request.user
     crt=[]
     total=0
@@ -72,7 +105,7 @@ def home(request):
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)
-
+    items=FoodItems.objects.filter(rest=cur_rest)
     cart1=[]
     for item in cart :
         if item.rest.rest_id==cur_rest.rest_id :
@@ -90,8 +123,9 @@ def home(request):
             form = PostForm()
             message=[]
             message.append("Added new item : ")
+
             return render_to_response(
-    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name}
+    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name,'items':items}
     )
 
     else:
@@ -99,8 +133,9 @@ def home(request):
             for item in cart :
                 customer = Customer.objects.get(pk=item.user.user_id)
                 if customer.contact == usr.username and item.status == "Added to cart":
-                    fitem=FoodItems.objects.get(pk=item.food.food_id)
-                    ritem=Restaurant.objects.get(pk=item.rest.rest_id)
+                    print item.food.name
+                    fitem=item.food
+                    ritem=item.rest
                     total=total+item.quantity*item.amount
                     crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
             
@@ -129,7 +164,7 @@ def home(request):
             )
         elif usr.last_name == "R": 
             return render_to_response(
-            'rest_home.html', {'form' : form , 'orders' : lst,'user': usr}
+            'rest_home.html', {'form' : form , 'orders' : lst,'user': usr,'items':items}
             )
         
         else : 
@@ -160,7 +195,7 @@ def change_status(request, pk):
             CurrentOrders.objects.filter(pk=order.pk).update(status=stats)
             order = get_object_or_404(CurrentOrders, pk=pk)
             if str(stat)=='4' : 
-                C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
+                C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=3.0)
                 C.save()
                 order.delete()
                 stat="Deliverd and deleted from current orders"
@@ -175,7 +210,7 @@ def change_status(request, pk):
 def cart(request, pk):
     item = get_object_or_404(FoodItems, pk=pk)
     customers = Customer.objects.all()
-    orders=CurrentOrders.objects.all()
+    orders=CurrentOrders.objects.all().order_by('-order_timestamp')
     user=request.user
     menu = FoodItems.objects.all()
     rest = Restaurant.objects.get(pk=item.rest.rest_id)
@@ -204,11 +239,13 @@ def checkout(request):
     usr=request.user
     crt=[]
     total = 0
-    orders = CurrentOrders.objects.all()
+    orders = CurrentOrders.objects.all().order_by('order_timestamp')
     form = AddressForm()
+    orders1=[]
     for item in orders :
         customer = Customer.objects.get(pk=item.user.user_id)
         if customer.contact == usr.username and item.status == "Added to cart":
+            orders1.append(item)
             fitem=FoodItems.objects.get(pk=item.food.food_id)
             ritem=Restaurant.objects.get(pk=item.rest.rest_id)
             total=total+item.quantity*item.amount
@@ -225,9 +262,8 @@ def checkout(request):
         if form.is_valid():
             address = form.cleaned_data['address']
             if ordered_cust != None:
-                #filterargs = { 'user' : ordered_cust , 'status' : "Added to cart"}
                 CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id, status__exact = 'Added to cart').update(address = address, status = 'Confirmed')
-                return render(request, 'success.html')
+                return render(request, 'success.html',{'user':usr,'total':total,'address':address,'orders':orders1} )
         else:
             form = AddressForm()
             return render(request, 'checkout.html', {'cart' : crt, 'total' : total, 'form':form})
@@ -243,9 +279,9 @@ def current_orders(request):
         if user.username == cust.contact:
             ordered_cust = cust
     if ordered_cust!=None:
-        orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id).order_by('-order_timestamp')
         orders=[]
-        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
+        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status__in=["Added to cart","Cancelled"])
         for item in orders1 :
             if item not in ordersNot :
                 orders.append(item)
@@ -257,11 +293,16 @@ def order_history_user(request):
     user = request.user
     ordered_cust=None
     customers =  Customer.objects.all()
+    orders=[]
     for cust in customers:
         if user.username == cust.contact:
             ordered_cust = cust
     if ordered_cust!=None:
-        orders = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders1 = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id).order_by('-order_timestamp')
+        ordersNot = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id,status="Cancelled")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
     
     return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
 
@@ -279,7 +320,7 @@ def cancel_order(request,pk):
     if ordered_cust!=None:
         orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
         orders=[]
-        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
+        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status__in=["Added to cart","Cancelled"])
         for item in orders1 :
             if item not in ordersNot :
                 orders.append(item)
@@ -291,7 +332,7 @@ def cancel_order(request,pk):
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
         order=CurrentOrders.objects.get(order_id__exact=pk)
-        C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
+        C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=3.0)
         C.save()
         orders.remove(order)
         order.delete()
@@ -304,14 +345,14 @@ def order_history(request):
     usr=request.user
     crt=[]
     total = 0
-    orders = OrderHistory.objects.all()
+    orders = OrderHistory.objects.all().order_by('-order_timestamp')
     for item in orders :
         rest = Restaurant.objects.get(pk=item.rest.rest_id)
         if rest.contact == usr.username and item.status == "Delivered":
             fitem=FoodItems.objects.get(pk=item.food.food_id)
             cust=item.user.name
             total=total+item.quantity*item.amount
-            crt.append([fitem.name,cust,item.status,item.quantity,item.amount])
+            crt.append([fitem.name,cust,item.status,item.quantity,item.amount,item.order_timestamp])
     if len(crt)==0:
         return HttpResponseRedirect("/home/")
     ordered_cust=None
@@ -339,3 +380,52 @@ def dec_count(request,pk):
         if q==1:
             CurrentOrders.objects.filter(order_id__exact = pk).delete()
         return HttpResponseRedirect("/home/")
+
+
+@csrf_exempt
+@login_required
+def review(request,pk):
+    order=OrderHistory.objects.get(pk=pk)
+    usr=request.user
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    for cust in customers:
+        if usr.username == cust.contact:
+            ordered_cust = cust
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.cleaned_data['review']
+            rating = int(form.cleaned_data['rating'])
+            reviews=Reviews.objects.filter(rest=order.rest)
+            count=len(reviews)
+            r=order.rating
+            rating_rest=(rating+count*order.rest.rating)/(count+1)
+            Restaurant.objects.filter(rest_id=order.rest.rest_id).update(rating=rating_rest)
+            R=Reviews(review=review,rating=rating,user_name=ordered_cust.name,rest=order.rest,votes=1)
+            rating=(rating+r)/2
+            OrderHistory.objects.filter(pk=pk).update(rating=rating)
+            R.save()
+
+            return HttpResponseRedirect("/home/")
+
+    else:
+        form = ReviewForm()
+ 
+    return render(request,
+    'review.html',
+    {'form': form,'user':usr}
+    )
+
+@csrf_exempt
+@login_required
+def see_review(request,pk):
+    usr=request.user
+    rest=Restaurant.objects.get(pk=pk)
+
+    items=Reviews.objects.filter(rest=rest)
+
+    return render(request,
+    'see_review.html',
+    {'items': items,'user':usr,'rest':rest}
+    )

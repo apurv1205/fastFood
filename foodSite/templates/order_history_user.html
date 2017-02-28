@@ -6,6 +6,7 @@
     <h3>Order History : </h3>
     <table style="width:90%" >
 	<tr>
+		<th>Order Time</th>
 		<th>Food Item</th>
 	    <th>Restaurant Name</th>
 	    <th>Status</th>
@@ -15,12 +16,13 @@
 	</tr>
 	{% for c in orders%}
 		<tr>
+			<td>{{c.order_timestamp}}</td>
 			<td>{{c.food}}</td>
 		    <td>{{c.rest}}</td>
 		    <td>{{c.status}}</td></td>
 		    <td>{{c.quantity}}</td>
 		    <td>{{c.food.price}}</td>
-		    <td><a>link for review</a></td>
+		    <td><a href="{% url 'review' pk=c.pk %}">link for review</a></td>
 		</tr>
 	{%endfor%}
 </table>

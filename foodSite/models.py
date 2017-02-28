@@ -41,7 +41,7 @@ class FoodItems(models.Model):
 			return self.name.encode('utf-8')
 
 class Reviews(models.Model):
-	user_id=models.ForeignKey(Customer,on_delete=models.CASCADE,null=True)
+	user_name=models.CharField(max_length=100,null=True)
 	rest=models.ForeignKey(Restaurant,on_delete=models.CASCADE,null=True)
 	votes=models.IntegerField(null=True)
 	rating=models.FloatField(null=True)

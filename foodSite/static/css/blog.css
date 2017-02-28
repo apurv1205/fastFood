@@ -46,10 +46,26 @@ h1, h2, h3, h4 {
 .post h1 a, .post h1 a:visited {
     color: #000000;
 }
-
+a.right1 {
+    font-size: 1.5em;
+    position: absolute;
+    top: 10px;
+    right: 240px;
+}
 a.right {
     font-size: 1.5em;
     position: absolute;
     top: 10px;
     right: 40px;
+}
+.right2 {
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    right: 215px;
+}
+
+tr.spaceUnder > td
+{
+  padding-bottom: 2em;
 }

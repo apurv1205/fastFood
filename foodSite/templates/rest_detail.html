@@ -11,8 +11,8 @@
         <h4>Contact : {{rest.contact}}</h4>
         <h4>Address : {{rest.address}}</h4>
         <h4>Website : <a href="{{rest.website}}">{{rest.website}}</a></h4>
-        <h4>Rating : {{rest.rating}}</h4>
-        <h4><a>See Reviews</a><h4> 
+        <h4>Rating : {{rest.rating|floatformat:2 }}</h4>
+        <h4><a href="{% url 'see_review' pk=rest.pk %}">See Reviews</a></h4>
     </div>
         <h3>Food Items provided :</h3>
         <table style="width:70%" >
