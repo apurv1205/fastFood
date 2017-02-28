@@ -1,3 +1,75 @@
+#search{
+    text-align: center;
+    width: 580px;
+    height: 30px;
+    float: left;
+    height: 20px;
+    margin: 10px;
+    position: relative;/*
+    top: 80;
+    bottom: 0;
+    right: 0;
+    left: 0;*/
+    padding: 18px 6% 60px 6%;
+    background: rgb(255, 255, 255);
+}
+
+#search_box{
+    width: 75%;
+    /*margin-top: 4px;*/
+    margin: 5px 5px 5px 5px;
+    padding: 10px 5px 10px 10px;    
+    border: 1px solid rgb(178, 178, 178);
+    /*font-style: italic;*/
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
+#search_box:active,
+#search_box:focus{
+    border: 1px solid rgba(91, 90, 90, 0.7);
+    background: rgba(238, 236, 240, 0.2);   
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+}
+
+#search_box1{
+    width: 75%;
+    /*margin-top: 4px;*/
+    margin: 5px 5px 5px 5px;
+    padding: 10px 5px 10px 10px;    
+    border: 1px solid rgb(178, 178, 178);
+    /*font-style: italic;*/
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
+#search_box1:active,
+#search_box1:focus{
+    border: 1px solid rgba(91, 90, 90, 0.7);
+    background: rgba(238, 236, 240, 0.2);   
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+}
+
 .page-header {
     background-color: #ff9400;
     margin-top: 0;

@@ -72,3 +72,4 @@ class OrderHistory(models.Model):
 	order_timestamp=models.DateTimeField(null=True)
 	amount=models.IntegerField(null=True)
 	rating=models.FloatField(null=True)
+	

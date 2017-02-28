@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from foodSite.models import *
 import editdistance
+import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddressForm
 
@@ -70,6 +71,22 @@ def home(request):
     cur_rest=curr_rest[0]
     form = PostForm()
     lst=[]
+
+#   5 Recommended FoodItems  --> {Name, Restaurant_Name, Price, Quantity} 
+    # if < 5 show all fooditems
+
+#   Features
+    # Weight of each cuisine in order history
+    # Weight of number of times an FoodItem ordered
+    # Price of FoodItem
+    # Restaurant rating
+
+    past_orders=OrderHistory.objects.all()
+    print past_orders
+    # print type(past_orders)
+    # df = pd.DataFrame(list(past_orders.values()))
+    # print len(df), len(past_orders)
+
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)

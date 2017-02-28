@@ -31,7 +31,35 @@
 
 <input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
 &nbsp
+<div id = "container">
+	<div id = "search">
+	<form id = "search_form" type="get" action="." style="margin: 10px">
+	    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
+	    <button id="search_submit" type="submit" >Submit</button>
+	</form>
+	
+	</div>
+	
+	<div id = "search">
+	<form  id = "search_form" type="get" action="." style="margin: 0">
+	    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
+	    <button id="search_submit" type="submit" >Submit</button>
+	</form>
 
+	</div>
+</div>
+
+{% for item in category_output %}
+    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+{% endfor %}
+
+{% for item in search_output %}
+    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+{% endfor %}
+
+<h3> Recommended </h3>
+<table>
+</table>
 <h3>Select restaurant</h3>
 <table>
 {% for rest in restaurants %}
@@ -42,19 +70,5 @@
     </tr>
 </table>
 &nbsp &nbsp
-<form type="get" action="." style="margin: 0">
-    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
-    <button id="search_submit" type="submit" >Submit</button>
-</form>
-{% for item in category_output %}
-        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
 
-{% endfor %}
-<form type="get" action="." style="margin: 0">
-    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
-    <button id="search_submit" type="submit" >Submit</button>
-</form>
-{% for item in search_output %}
-        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-{% endfor %}
 {% endblock %}
