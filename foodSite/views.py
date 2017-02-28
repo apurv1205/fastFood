@@ -85,7 +85,6 @@ def home(request):
                 lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk,item.address])
 
     if request.method == "POST":
-        #print "ok"
         form = PostForm(request.POST)
         if form.is_valid():
             C=FoodItems(name=form.cleaned_data['name'],rest=cur_rest,price=form.cleaned_data['price'],photo="ok",cuisine=form.cleaned_data['cuisine'],category=form.cleaned_data['category'])
@@ -105,7 +104,6 @@ def home(request):
                     fitem=FoodItems.objects.get(pk=item.food.food_id)
                     ritem=Restaurant.objects.get(pk=item.rest.rest_id)
                     total=total+item.quantity*item.amount
-                    print "Order primary" ,str(item.pk)
                     crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
             
             #search by category
@@ -131,19 +129,23 @@ def home(request):
             return render_to_response(
             'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
             )
-        else : 
+        elif usr.last_name == "R": 
             return render_to_response(
             'rest_home.html', {'form' : form , 'orders' : lst,'user': usr}
             )
+        
+        else : 
+            logout(request)
+            return HttpResponseRedirect('/')
 
 def rest_detail(request, pk):
     menu = FoodItems.objects.all()
+    rest = Restaurant.objects.get(pk=pk)
     items=[]
     for item in menu:
-        #print item
         if str(item.rest.rest_id) == str(pk) : 
             items.append(item)
-    return render(request, 'rest_detail.html', {'items': items})
+    return render(request, 'rest_detail.html', {'items': items , 'rest' : rest })
 
 @csrf_exempt
 def change_status(request, pk):
@@ -177,9 +179,15 @@ def cart(request, pk):
     customers = Customer.objects.all()
     orders=CurrentOrders.objects.all()
     user=request.user
+    menu = FoodItems.objects.all()
+    rest = Restaurant.objects.get(pk=item.rest.rest_id)
+    items=[]
+    for item1 in menu:
+        if str(item1.rest.rest_id) == str(rest.pk) : 
+            items.append(item1)
+
     for cust in customers :
         if user.username == cust.contact :
-
             flag=False
             for thing in orders :
                 if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id and thing.status=="Added to cart":
@@ -187,10 +195,11 @@ def cart(request, pk):
                     flag=True
 
             if flag==False :
-                #print "here"
                 C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
                 C.place_order()
-    return render(request, 'cart.html', {'item': item})
+    message=[]
+    message.append("Item Added to cart")
+    return render(request, 'rest_detail.html', {'items': items , 'rest' : rest ,'message' : message ,'item':item})
 
 @login_required
 def checkout(request):
@@ -243,7 +252,7 @@ def current_orders(request):
             if item not in ordersNot :
                 orders.append(item)
 
-        return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
+    return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
 
 @login_required
 def order_history_user(request):
@@ -261,42 +270,39 @@ def order_history_user(request):
             if item not in ordersNot :
                 orders.append(item)
 
-        return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
+    return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
 
 
 @login_required
 def cancel_order(request,pk):
-    print "Cancel ",str(pk)
     order = CurrentOrders.objects.get(order_id__exact = pk)
-    print "Cancelled by ",order.user
-    print order.status
+    user = request.user
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    message=[]
+    for cust in customers:
+        if user.username == cust.contact:
+            ordered_cust = cust
+    if ordered_cust!=None:
+        orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders=[]
+        ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
     if order.status != "Added to cart" and order.status != "Confirmed":
-        message = ["Cannot cancel order as restaurant has begun process!"]
-        user = request.user
-        ordered_cust=None
-        customers =  Customer.objects.all()
-        for cust in customers:
-            if user.username == cust.contact:
-                ordered_cust = cust
-        if ordered_cust!=None:
-            orders1 = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id)
-            orders=[]
-            ordersNot = CurrentOrders.objects.filter(user_id__exact = ordered_cust.user_id,status="Added to cart")
-            for item in orders1 :
-                if item not in ordersNot :
-                    orders.append(item)
-            #return render(request, 'view_orders.html',{'order':orders, 'user' : user, 'message' : message})
-            messages.info(request,"Your order cannot be cancelled as restaurant has begun process!")
-            return HttpResponseRedirect("/home/")
+        message.append("Cannot cancel order as restaurant has begun process!")
+        return render(request, 'view_orders.html',{'orders':orders, 'user' : user,'message' : message})
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
         order=CurrentOrders.objects.get(order_id__exact=pk)
         C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
         C.save()
+        orders.remove(order)
         order.delete()
-        return HttpResponseRedirect("/current_orders/")
-        # remove from current orders and add to order history
+        message.append("Order Cancelled !")
+        return render(request, 'view_orders.html',{'orders':orders, 'user' : user , 'message' : message})
 
 
 @login_required
@@ -324,14 +330,12 @@ def order_history(request):
 
 @login_required
 def inc_count(request,pk):
-    print "Increment quantity"
     q = CurrentOrders.objects.get(order_id__exact = pk).quantity
     CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q+1)
     return HttpResponseRedirect("/home/")
 
 @login_required
 def dec_count(request,pk):
-    print "Decrement quantity"
     q = CurrentOrders.objects.get(order_id__exact = pk).quantity
     if q==0:
         messages.info(request,"Invalid attempt!")
