@@ -275,4 +275,6 @@ def dec_count(request,pk):
         return HttpResponseRedirect("/home/")
     else:
         CurrentOrders.objects.filter(order_id__exact = pk).update(quantity = q-1)
+        if q==1:
+            CurrentOrders.objects.filter(order_id__exact = pk).delete()
         return HttpResponseRedirect("/home/")
