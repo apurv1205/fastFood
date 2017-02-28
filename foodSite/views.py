@@ -77,6 +77,7 @@ def home(request):
     for item in cart :
         if item.rest.rest_id==cur_rest.rest_id :
             if item.status=="Added to cart" : cart1.append(item)
+            elif item.status=="Cancelled" : cart1.append(item)
             else : 
                 fitem=FoodItems.objects.get(pk=item.food.food_id)
                 lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk,item.address])
@@ -243,6 +244,25 @@ def current_orders(request):
         return render(request, 'view_orders.html',{'orders':orders, 'user' : user})
 
 @login_required
+def order_history_user(request):
+    user = request.user
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    for cust in customers:
+        if user.username == cust.contact:
+            ordered_cust = cust
+    if ordered_cust!=None:
+        orders1 = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id)
+        orders=[]
+        ordersNot = OrderHistory.objects.filter(user_id__exact = ordered_cust.user_id,status="Cancelled")
+        for item in orders1 :
+            if item not in ordersNot :
+                orders.append(item)
+
+        return render(request, 'order_history_user.html',{'orders':orders, 'user' : user})
+
+
+@login_required
 def cancel_order(request,pk):
     print "Cancel ",str(pk)
     order = CurrentOrders.objects.get(order_id__exact = pk)
@@ -255,9 +275,36 @@ def cancel_order(request,pk):
     else:
 
         CurrentOrders.objects.filter(order_id__exact=pk).update(status = "Cancelled")
-        # remove from current orders and add to order history
+        order=CurrentOrders.objects.get(order_id__exact=pk)
+        C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=0.0)
+        C.save()
+        order.delete()
         return HttpResponseRedirect("/current_orders/")
         
+
+
+@login_required
+def order_history(request):
+    usr=request.user
+    crt=[]
+    total = 0
+    orders = OrderHistory.objects.all()
+    for item in orders :
+        rest = Restaurant.objects.get(pk=item.rest.rest_id)
+        if rest.contact == usr.username and item.status == "Delivered":
+            fitem=FoodItems.objects.get(pk=item.food.food_id)
+            cust=item.user.name
+            total=total+item.quantity*item.amount
+            crt.append([fitem.name,cust,item.status,item.quantity,item.amount])
+    if len(crt)==0:
+        return HttpResponseRedirect("/home/")
+    ordered_cust=None
+    customers =  Customer.objects.all()
+    for cust in customers:
+        if usr.username == cust.contact:
+            ordered_cust = cust
+
+    return render(request, 'order_history.html', {'cart' : crt, 'total' : total})
 
 @login_required
 def inc_count(request,pk):

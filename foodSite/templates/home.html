@@ -39,6 +39,7 @@
 &nbsp
 <br>
 <input class="btn btn-success" type="button" value="View current orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
 <h3>Select restaurant</h3>
 <table>
 {% for rest in restaurants %}
