@@ -39,12 +39,12 @@
 	{% endif %}
 </table>
 <div id = "chome_button">
-	<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
-	<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
+	<input class="btn btn-default" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+	<input class="btn btn-default" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
 	<!-- &nbsp -->
 	<!-- <br> -->
-	<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
-	<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+	<input class="btn btn-default" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+	<input class="btn btn-default" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
 </div>
 <br/>
 <!-- &nbsp -->
@@ -55,8 +55,8 @@
 			<table style="width:100%">
 			{% for rest in restaurants %}
 				<tr>
-				<td><h5 style="text-align:left"><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5></td>
-				<td><h5>    {{rest.rating}}</h5></td>
+				<td><h4 style="text-align:left"><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h4></td>
+				<td><h4>    {{rest.rating|floatformat:2 }}</h4></td>
 			    </tr>
 			{% endfor %}
 			    </tr>
