@@ -33,7 +33,7 @@ def register(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-        return render(request,
+            return render(request,
     'registration/success.html',
     {'form': form}
     )
@@ -75,7 +75,7 @@ def register_rest(request):
         form = RegistrationRestForm()
  
     return render(request,
-    'registration/register.html',
+    'registration/register_rest.html',
     {'form': form}
     )
 
@@ -440,3 +440,13 @@ def upvote(request,pk):
     'see_review.html',
     {'items': items,'user':usr,'rest':rest}
     )
+
+@csrf_exempt
+@login_required
+def clear(request):
+    user=request.user
+    ordered_cust=Customer.objects.get(contact=str(user.username))
+    orders=CurrentOrders.objects.filter(user=ordered_cust,status="Added to cart")
+    for item in orders :
+        item.delete()
+    return HttpResponseRedirect("/home/")

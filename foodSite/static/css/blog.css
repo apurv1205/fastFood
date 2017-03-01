@@ -70,7 +70,16 @@ tr.spaceUnder > td
     border :1px grey solid;
     padding-bottom: 2em;
 }
-
+tr.home > td
+{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border :1px grey solid;
+}
+tr.home1 > td
+{
+    padding-top: 1em;
+}
 a.disable:visited {
  color:black;
 }
