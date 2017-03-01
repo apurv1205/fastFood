@@ -71,22 +71,6 @@ def home(request):
     form = PostForm()
     lst=[]
 
-#   5 Recommended FoodItems  --> {Name, Restaurant_Name, Price, Quantity} 
-    # if < 5 show all fooditems
-
-#   Features
-    # Weight of each cuisine in order history
-    # Weight of number of times an FoodItem ordered
-    # Price of FoodItem
-    # Restaurant rating
-
-    past_orders=OrderHistory.objects.all()
-    # print past_orders.values()
-    for order in past_orders:
-        print order.order_id
-    # print type(past_orders)
-    # df = pd.DataFrame(list(past_orders.values()))
-    # print len(df), len(past_orders)
 
     for rest in restaurants :
         if usr.username==rest.contact :
