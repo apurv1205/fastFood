@@ -162,7 +162,10 @@ def home(request):
                     for item in menu:
                         a = item.category.lower()
                         b = search_query.lower()
-                        if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                        c = item.cuisine.lower()
+                        if a == b or a in b or b in a or editdistance.eval(a,b)<=2:
+                           category_output.append(item)
+                        elif b == c or c in b or b in c or editdistance.eval(c,b)<=2:
                            category_output.append(item)
 
                 search_output=[]
