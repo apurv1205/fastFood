@@ -15,7 +15,7 @@
         <h4><a href="{% url 'see_review' pk=rest.pk %}">See Reviews</a></h4>
     </div>
         <h3>Food Items provided :</h3>
-        <table style="width:90%" >
+        <table style="width:100%" >
 		<tr>
 			<th>Food Item</th>
 		    <th>Price</th>
@@ -29,7 +29,7 @@
 		    <td>{{item.price}}</td>
 		    <td>{{item.cuisine}}</td>
 		    <td>{{item.category}}</td>
-		    <td><a href="{% url 'cart' pk=item.pk %}">Add to cart</a></td>
+		    <td><a class="disable" href="{% url 'cart' pk=item.pk %}">Add to cart</a></td>
 		</tr>
 	{% endfor %}
 	</table>
