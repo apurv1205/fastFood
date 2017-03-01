@@ -12,6 +12,10 @@ body{
     width: 8%
 }
 
+#review_link:visited{
+    color: green;
+}
+
 #login{
     text-align: center;
     width: 400px;
