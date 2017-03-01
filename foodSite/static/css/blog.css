@@ -20,7 +20,25 @@ body{
          border-radius: 5px;
 }
 
-#register{
+#rregister{
+    text-align: center;
+    width: 500px;
+    height: 600px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    /*margin: 0 0 35px 0;*/
+    background: rgb(247, 247, 247);
+    border: 1px solid rgba(147, 184, 189,0.8);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+#cregister{
     text-align: center;
     width: 500px;
     height: 500px;
@@ -95,7 +113,12 @@ body{
     height: 426px;
 }
 
-#search_box, #login input:not([type = "submit"]), #register input:not([type = "submit"]), #new_item input:not([type = "submit"]){
+#cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
+    width: 300px;
+}
+
+#search_box, #login input:not([type = "submit"]), #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
+    /*width: 300px;*/
     margin: 5px 5px 5px 5px;
     padding: 10px 5px 10px 10px;    
     border: 1px solid rgb(178, 178, 178);
@@ -112,8 +135,8 @@ body{
             box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
 }
 
-#search_box:active, #login input:not([type = "submit"]):active, #register input:not([type = "submit"]):active, #new_item input:not([type = "submit"]):active,
-#search_box:focus, #login input:not([type = "submit"]):focus, #register input:not([type = "submit"]):focus, #new_item input:not([type = "submit"]):focus{
+#search_box:active, #login input:not([type = "submit"]):active, #rregister input:not([type = "submit"]):active, #rregister textarea:active, #cregister input:not([type = "submit"]):active, #new_item input:not([type = "submit"]):active,
+#search_box:focus, #login input:not([type = "submit"]):focus, #rregister input:not([type = "submit"]):focus, #rregister textarea:focus, #cregister input:not([type = "submit"]):focus, #new_item input:not([type = "submit"]):focus{
     border: 1px solid rgba(91, 90, 90, 0.7);
     background: rgb(255, 255, 255);    
     -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
@@ -202,4 +225,82 @@ input[type = "submit"], button {
 input[type = "submit"]:hover, button:hover{
     background-color: #555555;
     color: white;
+}
+
+
+/*.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+
+.content {
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lobster', cursive;
+}
+
+.date {
+    color: #828282;
+}
+
+.save {
+    float: left;
+}
+
+.post-form textarea, .post-form input {
+    width: 100%;
+}
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+
+.post {
+    margin-bottom: 70px;
+}
+
+.post h1 a, .post h1 a:visited {
+    color: #000000;
+}*/
+a.right1 {
+    font-size: 1.5em;
+    position: absolute;
+    top: 10px;
+    right: 240px;
+}
+a.right {
+    font-size: 1.5em;
+    position: absolute;
+    top: 10px;
+    right: 40px;
+}
+.right2 {
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    right: 215px;
+}
+
+tr.spaceUnder > td
+{
+    border :1px grey solid;
+    padding-bottom: 2em;
+}
+
+a.disable:visited {
+color:black;
 }
