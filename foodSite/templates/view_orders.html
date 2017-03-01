@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+<script>
+    {% for msg in message %}alert('{{ msg }}{{item}}');
+    {%endfor%}
+</script>
+    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
+    <h3>Customer name : {{user.first_name}} </h3>
+    <h3>Current Orders : </h3>
+    <table style="width:70%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant Name</th>
+	    <th>Status</th>
+	    <th>Quantity</th>
+	    <th>Price</th> 
+	    <th>Change status</th>
+	</tr>
+	{% for c in orders%}
+		<tr>
+			<td>{{c.food}}</td>
+		    <td>{{c.rest}}</td>
+		    <td>{{c.status}}</td></td>
+		    <td>{{c.quantity}}</td>
+		    <td>{{c.food.price}}</td>
+		    <td><a href="{% url 'cancel_order' pk=c.order_id %}">Cancel</a></td> 
+		</tr>
+	{%endfor%}
+</table>
+
+
+{% endblock %}

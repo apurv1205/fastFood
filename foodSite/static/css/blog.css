@@ -1,26 +1,121 @@
+#login{
+    text-align: center;
+    width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    border: 1px solid rgba(147, 184, 189,0.8);
+    background: rgb(247, 247, 247);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+#register{
+    text-align: center;
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    /*margin: 0 0 35px 0;*/
+    background: rgb(247, 247, 247);
+    border: 1px solid rgba(147, 184, 189,0.8);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+.form{
+    font-size: 30px;
+    /*color: rgb(6, 106, 117);*/
+    padding: 2px 0 10px 0;
+    font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
+    font-weight: bold;
+    text-align: center;
+    /*padding-bottom: 30px;*/
+}
+
+.res_search{
+    text-align: center;
+    width: 385px;
+    height: 400px;
+    float: left;
+    /*height: 200px;*/
+    margin: 10px;
+    position: relative;
+    padding: 18px 10px 18px 10px;
+    background: rgb(255, 255, 255);
+}
+
+.scroll_pane{
+    overflow: hidden;
+    overflow-y: scroll;
+    text-align: center;
+    width: 360px;
+    height: 350px;
+    /*float: left;*/
+    /*height: 200px;*/
+    margin: 10px;
+    position: relative;
+    padding: 18px 10px 18px 10px;
+    background: rgb(255, 255, 255);
+        border: 1px solid rgb(178, 178, 178);
+    /*font-style: italic;*/
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
+#login input, #register input{
+    margin: 5px 5px 5px 5px;
+    padding: 10px 5px 10px 10px;    
+    border: 1px solid rgb(173, 173, 173);
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
 #search{
     text-align: center;
-    width: 580px;
+    width: 360px;
     height: 30px;
-    float: left;
     height: 20px;
     margin: 10px;
-    position: relative;/*
-    top: 80;
-    bottom: 0;
-    right: 0;
-    left: 0;*/
+    position: relative;
     padding: 18px 6% 60px 6%;
     background: rgb(255, 255, 255);
 }
 
-#search_box{
-    width: 75%;
-    /*margin-top: 4px;*/
+#ss_scroll_pane{
+    height: 437px;
+}
+
+#search_box/*, #id_password, #id_username*/{
     margin: 5px 5px 5px 5px;
     padding: 10px 5px 10px 10px;    
     border: 1px solid rgb(178, 178, 178);
-    /*font-style: italic;*/
     -webkit-appearance: textfield;
     -webkit-box-sizing: content-box;
       -moz-box-sizing : content-box;
@@ -43,12 +138,9 @@
 }
 
 #search_box1{
-    width: 75%;
-    /*margin-top: 4px;*/
     margin: 5px 5px 5px 5px;
     padding: 10px 5px 10px 10px;    
     border: 1px solid rgb(178, 178, 178);
-    /*font-style: italic;*/
     -webkit-appearance: textfield;
     -webkit-box-sizing: content-box;
       -moz-box-sizing : content-box;

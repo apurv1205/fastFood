@@ -3,72 +3,92 @@
 {% block content %}
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
 <h3>Current items in cart</h3>
-<table style="width:70%" >
+<table style="width:100%" >
 	<tr>
 		<th>Food Item</th>
 	    <th>Restaurant</th>
 	    <th>Status</th>
-	    <th>Quantity</th>
+	    <th style="text-align:right">Quantity</th>
+	    <th></th>
 	    <th>Price</th> 
 	</tr>
 	{% for c in cart%}
 		<tr>
-			<td >{{c.0}}</td>
-		    <td>{{c.1}}</td>
-		    <td>{{c.4}}</td>
-		    <td>{{c.3}}</td>
-		    <td>{{c.2}}</td> 
+			<td width="21%">{{c.0}}</td>
+		    <td width="21%">{{c.1}}</td>
+		    <td width="21%">{{c.4}}</td>
+		    <td style="text-align:right" width="19%">{{c.3}}</td>
+		    <td style="text-align:left" width="5%" ><input  type="button" value="+" onclick = "location.href='{% url 'inc_count' pk=c.5 %}'"  />
+		    <input type="button" value="-" onclick = "location.href='{% url 'dec_count' pk=c.5 %}'"/></td>
+		    <td width="13%">{{c.2}}</td> 
+
+
 		</tr>
 	{%endfor%}
 		<tr>
 			<td ></td>
 		    <td></td>
 		    <td></td>
-		    <td>Total Amount</td>
-		    <td>{{total}}</td> 
+		    <td></td> 
+		    <td style="text-align:left">Total Amount</td>
+		    <td >{{total}}</td> 
 		</tr>
 </table>
 
 <input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+<input class="btn btn-success" type="button" value="View current orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+<br/>
 &nbsp
 <div id = "container">
-	<div id = "search">
-	<form id = "search_form" type="get" action="." style="margin: 10px">
-	    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
-	    <button id="search_submit" type="submit" >Submit</button>
-	</form>
-	
+	<div id = "browse" class = "res_search">
+	<h3>Select restaurant</h3>
+		<div id = "ss_scroll_pane"class = "scroll_pane">
+			<table>
+			{% for rest in restaurants %}
+				<tr>
+				<h5><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5>
+			    </tr>
+			{% endfor %}
+			    </tr>
+			</table>
+		</div>
 	</div>
-	
-	<div id = "search">
-	<form  id = "search_form" type="get" action="." style="margin: 0">
-	    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
-	    <button id="search_submit" type="submit" >Submit</button>
-	</form>
+	<div id = "category" class = "res_search">
+	<h3>Search by Category</h3>
+		<div id = "search">
+		<form id = "search_form" type="get" action="." style="margin: 10px">
+		    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
+		    <button id="search_submit" type="submit" >Submit</button>
+		</form>
+		
+		</div>
 
+		<div class = "scroll_pane">
+			{% for item in category_output %}
+			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+			{% endfor %}
+		</div>
 	</div>
+	<div id = "ssearch" class = "res_search">
+	<h3>Search by Name</h3>	
+		<div id = "search">
+		<form  id = "search_form" type="get" action="." style="margin: 0">
+		    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
+		    <button id="search_submit" type="submit" >Submit</button>
+		</form>
+
+		</div>
+		<div class = "scroll_pane">
+			{% for item in search_output %}
+			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+			{% endfor %}
+		</div>
+	</div>
+	<!-- <h3> Recommended </h3>
+	<table>
+	</table> -->
 </div>
-
-{% for item in category_output %}
-    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-{% endfor %}
-
-{% for item in search_output %}
-    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-{% endfor %}
-
-<h3> Recommended </h3>
-<table>
-</table>
-<h3>Select restaurant</h3>
-<table>
-{% for rest in restaurants %}
-	<tr>
-	<h5><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5>
-    </tr>
-{% endfor %}
-    </tr>
-</table>
 &nbsp &nbsp
 
 {% endblock %}
