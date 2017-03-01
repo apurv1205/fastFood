@@ -16,7 +16,7 @@ class StatusForm(forms.Form):
 
 class PostForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Name"))
-    price = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_length=30)), label=_("Price"))
+    price = forms.IntegerField(required=True, min_value=1, label=_("Price"), error_messages={ 'invalid': ("Enter valid price") })
     cuisine = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Cuisine"))
     category = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Category"))
 

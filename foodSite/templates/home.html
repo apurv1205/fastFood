@@ -7,6 +7,8 @@
 </script>
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
 <table style="width:100%" >
+{% if message %}
+{% else %}
 	<tr class="home">
 		<th style="text-align:center"><font size="4">Food Item</font></th>
 	    <th style="text-align:center"><font size="4">Restaurant</font></th>
@@ -34,6 +36,7 @@
 		    <td style="text-align:center"><h4>Total Amount</h4></td>
 		    <td style="text-align:center"><h4>{{total}}</h4></td> 
 		</tr>
+	{% endif %}
 </table>
 <input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
 <input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />

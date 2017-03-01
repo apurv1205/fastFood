@@ -103,7 +103,6 @@ def home(request):
     form = PostForm()
     lst=[]
 
-
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)
@@ -131,6 +130,7 @@ def home(request):
     )
 
     else:
+        message=[]
         if usr.last_name == "C" :    
             for item in cart :
                 customer = Customer.objects.get(pk=item.user.user_id)
@@ -139,6 +139,10 @@ def home(request):
                     ritem=item.rest
                     total=total+item.quantity*item.amount
                     crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
+            msg=""
+            if len(crt)==0 : 
+                msg="No Item in Cart, Add something !"
+                message.append(msg)
             
             #search by category
             if request.method == 'GET':
@@ -161,7 +165,7 @@ def home(request):
                            search_output.append(item)
 
             return render_to_response(
-            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output}
+            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output,'message':message}
             )
         elif usr.last_name == "R": 
             return render_to_response(
@@ -180,7 +184,7 @@ def rest_detail(request, pk):
 @csrf_exempt
 def change_status(request, pk):
     order = get_object_or_404(CurrentOrders, pk=pk)
-    if request.method == 'POST':
+    if request.method == 'POST' and order is not None:
         form = StatusForm(request.POST)
         if form.is_valid():
             stat = form.cleaned_data['choice_field']
@@ -195,7 +199,9 @@ def change_status(request, pk):
                 C=OrderHistory(food=order.food,quantity=order.quantity,order_id=order.order_id,user=order.user,rest=order.rest,status=order.status,order_timestamp=order.order_timestamp,amount=order.amount,rating=3.0)
                 C.save()
                 order.delete()
-                stat="Deliverd and deleted from current orders"
+                stats="Delivered and deleted from current orders"
+                order=[]
+                return HttpResponseRedirect('/home/')
         message=[]
         message.append('Order has been updated to ')
 
