@@ -67,5 +67,10 @@ a.right {
 
 tr.spaceUnder > td
 {
-  padding-bottom: 2em;
+    border :1px grey solid;
+    padding-bottom: 2em;
+}
+
+a.disable:visited {
+ color:black;
 }

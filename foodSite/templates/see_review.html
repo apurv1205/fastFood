@@ -22,17 +22,26 @@
         <col width="90px" />
         <col width="70px" />
         <tr>
-            <th>Author</th>
-            <th>Review</th>
+            <th style="text-align:center">Author</th>
+            <th style="text-align:center">Review</th>
             <th style="text-align:center">Rating</th>
             <th style="text-align:center">Votes</th>
         </tr>
         {% for item in items%}
         <tr class="spaceUnder">
-            <td>{{item.user_name}}</td>
-            <td >{{item.review}}</td>
+            <td style="text-align:center">{{item.user_name}}</td>
+            <td style="text-align:center">{{item.review}}</td>
             <td style="text-align:center">{{item.rating}}</td>
-            <td style="text-align:center">{{item.votes}}</td>
+            <td style="text-align:center">{{item.votes}}
+            <script> 
+               function clickAndDisable(link) {
+                 alert("Thank you for your upvote !");
+                 link.onclick = function(event) {
+                    event.preventDefault();
+                 }
+               }   
+            </script>
+            <a href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></td>
         </tr>
     {% endfor %}
     </table>

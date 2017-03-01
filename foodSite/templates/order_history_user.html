@@ -22,7 +22,13 @@
 		    <td>{{c.status}}</td></td>
 		    <td>{{c.quantity}}</td>
 		    <td>{{c.food.price}}</td>
-		    <td><a href="{% url 'review' pk=c.pk %}">link for review</a></td>
+		    <td>
+		   	<script type="text/javascript">
+			function click(link){
+				alert("Thank you for your upvote !")
+			}​​
+			</script>
+			<a class="disable" href="{% url 'review' pk=c.pk %}" onclick="click(this);">Add Review</a></td>
 		</tr>
 	{%endfor%}
 </table>

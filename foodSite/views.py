@@ -402,6 +402,7 @@ def review(request,pk):
             r=order.rating
             rating_rest=(rating+count*order.rest.rating)/(count+1)
             Restaurant.objects.filter(rest_id=order.rest.rest_id).update(rating=rating_rest)
+            review="This review is for food item : "+str(order.food.name)+".\n"+review
             R=Reviews(review=review,rating=rating,user_name=ordered_cust.name,rest=order.rest,votes=1)
             rating=(rating+r)/2
             OrderHistory.objects.filter(pk=pk).update(rating=rating)
@@ -423,8 +424,23 @@ def see_review(request,pk):
     usr=request.user
     rest=Restaurant.objects.get(pk=pk)
 
-    items=Reviews.objects.filter(rest=rest)
+    items=Reviews.objects.filter(rest=rest).order_by('-votes')
 
+    return render(request,
+    'see_review.html',
+    {'items': items,'user':usr,'rest':rest}
+    )
+
+@csrf_exempt
+@login_required
+def upvote(request,pk):
+    usr=request.user
+    revi=Reviews.objects.get(pk=pk)
+    votes=revi.votes
+    votes+=1
+    Reviews.objects.filter(pk=pk).update(votes=votes)
+    rest=revi.rest
+    items=Reviews.objects.filter(rest=rest).order_by('-votes')
     return render(request,
     'see_review.html',
     {'items': items,'user':usr,'rest':rest}
