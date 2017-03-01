@@ -38,14 +38,16 @@
 		</tr>
 	{% endif %}
 </table>
-<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
-<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
-&nbsp
-<br>
-<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
-<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+<div id = "chome_button">
+	<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+	<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
+	<!-- &nbsp -->
+	<!-- <br> -->
+	<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+	<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+</div>
 <br/>
-&nbsp
+<!-- &nbsp -->
 <div id = "container">
 	<div id = "browse" class = "res_search">
 	<h3>Select restaurant</h3>

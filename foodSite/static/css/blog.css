@@ -3,6 +3,15 @@ body{
     font-family: 'FranchiseRegular','Arial',Arial,sans-serif; 
 }
 
+#container{
+    width: 90%
+    margin: 0 auto;
+}
+
+#add_review{
+    width: 8%
+}
+
 #login{
     text-align: center;
     width: 400px;
@@ -66,7 +75,7 @@ body{
 
 .res_search{
     text-align: center;
-    width: 385px;
+    width: 30%;
     height: 400px;
     float: left;
     margin: 10px;
@@ -79,7 +88,7 @@ body{
     overflow: hidden;
     overflow-y: scroll;
     text-align: center;
-    width: 360px;
+    width: 95%;
     height: 350px;
     margin: 10px;
     position: relative;
@@ -100,7 +109,7 @@ body{
 
 #search{
     text-align: center;
-    width: 360px;
+    width: 99%;
     height: 30px;
     height: 20px;
     margin: 10px;
@@ -109,12 +118,33 @@ body{
     background: rgb(247, 247, 247);
 }
 
+#chome_button{
+    width: 95%;
+    margin: 0 auto;
+
+    /*background-color: #555555;*/
+}
+
+#chome_button input{
+    width:24%;
+}
+
 #ss_scroll_pane{
     height: 426px;
 }
 
 #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
     width: 300px;
+}
+
+#search_box{
+    width: 60%;
+    height: 90%;
+}
+
+#search_submit{
+    width: 20%;
+    height: 90%;
 }
 
 #search_box, #login input:not([type = "submit"]), #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
@@ -227,55 +257,6 @@ input[type = "submit"]:hover, button:hover{
     color: white;
 }
 
-
-/*.page-header {
-    background-color: #ff9400;
-    margin-top: 0;
-    padding: 20px 20px 20px 40px;
-}
-
-.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
-    color: #ffffff;
-    font-size: 36pt;
-    text-decoration: none;
-}
-
-.content {
-    margin-top: 40px;
-    margin-left: 40px;
-    margin-right: 40px;
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Lobster', cursive;
-}
-
-.date {
-    color: #828282;
-}
-
-.save {
-    float: left;
-}
-
-.post-form textarea, .post-form input {
-    width: 100%;
-}
-
-.top-menu, .top-menu:hover, .top-menu:visited {
-    color: #ffffff;
-    float: right;
-    font-size: 26pt;
-    margin-right: 20px;
-}
-
-.post {
-    margin-bottom: 70px;
-}
-
-.post h1 a, .post h1 a:visited {
-    color: #000000;
-}*/
 a.right1 {
     font-size: 1.5em;
     position: absolute;
