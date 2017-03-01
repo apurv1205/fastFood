@@ -32,7 +32,7 @@
             <td style="text-align:center">{{item.user_name}}</td>
             <td style="text-align:center">{{item.review}}</td>
             <td style="text-align:center">{{item.rating}}</td>
-            <td style="text-align:center">{{item.votes}}
+            <td style="text-align:center">{{item.votes}}<p>
             <script> 
                function clickAndDisable(link) {
                  alert("Thank you for your upvote !");
@@ -41,7 +41,7 @@
                  }
                }   
             </script>
-            <a href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></td>
+            <a href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></p></td>
         </tr>
     {% endfor %}
     </table>
