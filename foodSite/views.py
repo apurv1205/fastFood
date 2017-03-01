@@ -8,7 +8,6 @@ from django.template import RequestContext
 from django.contrib import messages
 from foodSite.models import *
 import editdistance
-import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddressForm
 from django.contrib.auth import authenticate, login
@@ -34,7 +33,7 @@ def register(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-        return render(request,
+            return render(request,
     'registration/success.html',
     {'form': form}
     )
@@ -443,3 +442,13 @@ def upvote(request,pk):
     'see_review.html',
     {'items': items,'user':usr,'rest':rest}
     )
+
+@csrf_exempt
+@login_required
+def clear(request):
+    user=request.user
+    ordered_cust=Customer.objects.get(contact=str(user.username))
+    orders=CurrentOrders.objects.filter(user=ordered_cust,status="Added to cart")
+    for item in orders :
+        item.delete()
+    return HttpResponseRedirect("/home/")

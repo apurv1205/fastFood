@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^see_review/(?P<pk>\d+)/$', views.see_review, name = 'see_review'),
     url(r'^review/(?P<pk>\d+)/$', views.review, name='review'),
     url(r'^upvote/(?P<pk>\d+)/$', views.upvote, name='upvote'),
+    url(r'^clear/$', views.clear, name='clear'),
 ]

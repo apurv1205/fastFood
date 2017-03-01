@@ -6,40 +6,40 @@
     {%endfor%}
 </script>
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
-<h3>Current items in cart</h3>
 <table style="width:100%" >
-	<tr>
-		<th>Food Item</th>
-	    <th>Restaurant</th>
-	    <th>Status</th>
-	    <th style="text-align:right">Quantity</th>
-	    <th></th>
-	    <th>Price</th> 
+	<tr class="home">
+		<th style="text-align:center"><font size="4">Food Item</font></th>
+	    <th style="text-align:center"><font size="4">Restaurant</font></th>
+	    <th style="text-align:center"><font size="4">Status</font></th>
+	    <th style="text-align:center"><font size="4">Quantity</font></th>
+	    <th style="text-align:center"><font size="4">Price</font></th> 
 	</tr>
 	{% for c in cart%}
-		<tr>
-			<td width="21%">{{c.0}}</td>
-		    <td width="21%">{{c.1}}</td>
-		    <td width="21%">{{c.4}}</td>
-		    <td style="text-align:right" width="19%">{{c.3}}</td>
-		    <td style="text-align:left" width="5%" ><input  type="button" value="+" onclick = "location.href='{% url 'inc_count' pk=c.5 %}'"  />
-		    <input type="button" value="-" onclick = "location.href='{% url 'dec_count' pk=c.5 %}'"/></td>
-		    <td width="13%">{{c.2}}</td> 
+		<tr class="home">
+			<td width="21%" style="text-align:center">{{c.0}}</td>
+		    <td width="21%" style="text-align:center">{{c.1}}</td>
+		    <td width="21%" style="text-align:center">{{c.4}}</td>
+		    <td style="text-align:center" >{{c.3}}
+		    <input class="btn btn-success" type="button" value="+" onclick = "location.href='{% url 'inc_count' pk=c.5 %}'" />
+		    <input class="btn btn-success" type="button" value="-" onclick = "location.href='{% url 'dec_count' pk=c.5 %}'"/>
+		    </td>
+		    <td style="text-align:center">{{c.2}}</td> 
 		</tr>
 	{%endfor%}
 
-		<tr>
+		<tr class="home1">
 			<td ></td>
 		    <td ></td>
 		    <td ></td>
-		    <td ></td> 
-		    <td >Total Amount</td>
-		    <td >{{total}}</td> 
+		    <td style="text-align:center"><h4>Total Amount</h4></td>
+		    <td style="text-align:center"><h4>{{total}}</h4></td> 
 		</tr>
 </table>
-<br/>
 <input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
-<input class="btn btn-success" type="button" value="View current orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
+&nbsp
+<br>
+<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
 <input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
 <br/>
 &nbsp
