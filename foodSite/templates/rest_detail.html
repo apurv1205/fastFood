@@ -1,15 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script>
+    {% for msg in message %}alert('{{ msg }} : {{item.name}}');
+    {%endfor%}
+</script>
+    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
     <div class="post">
-        <h1>{{ rest.name }}</h1>
-        <h3>Food Items provided</h3>
-        <table>
-		{% for item in items %}
-			<tr>
-			<h4><a href="{% url 'cart' pk=item.pk %}">{{item.name}}</a></h4>
-			</tr>
-		{% endfor %}
-		</table>
+        <h2>Restaurant name : {{ rest.name }}</h2>
+        <h4>Contact : {{rest.contact}}</h4>
+        <h4>Address : {{rest.address}}</h4>
+        <h4>Website : <a href="{{rest.website}}">{{rest.website}}</a></h4>
+        <h4>Rating : {{rest.rating}}</h4>
+        <h4><a>See Reviews</a><h4> 
     </div>
+        <h3>Food Items provided :</h3>
+        <table style="width:70%" >
+		<tr>
+			<th>Food Item</th>
+		    <th>Price</th>
+		    <th>Cuisine</th>
+		    <th>Category</th>
+		    <th>Add to Cart</th>
+		</tr>
+		{% for item in items%}
+		<tr>
+			<td>{{item.name}}</td>
+		    <td>{{item.price}}</td>
+		    <td>{{item.cuisine}}</td>
+		    <td>{{item.category}}</td>
+		    <td><a href="{% url 'cart' pk=item.pk %}">Add to cart</a></td>
+		</tr>
+	{% endfor %}
+	</table>
 {% endblock %}
