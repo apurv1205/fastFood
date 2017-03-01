@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script>
+    {% for msg in message %}alert('{{ msg }} : {{item.name}}');
+    {%endfor%}
+</script>
+    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
+    <div class="post">
+        <h2>Restaurant name : {{ rest.name }}</h2>
+        <h4>Contact : {{rest.contact}}</h4>
+        <h4>Address : {{rest.address}}</h4>
+        <h4>Website : <a href="{{rest.website}}">{{rest.website}}</a></h4>
+        <h4>Rating : {{rest.rating|floatformat:2 }}</h4>
+    </div>
+
+
+    <h3>Reviews :</h3>
+        <table class="fixed" cellpadding="90">
+        <col width="200px" />
+        <col width="900px" />
+        <col width="90px" />
+        <col width="70px" />
+        <tr>
+            <th style="text-align:center">Author</th>
+            <th style="text-align:center">Review</th>
+            <th style="text-align:center">Rating</th>
+            <th style="text-align:center">Votes</th>
+        </tr>
+        {% for item in items%}
+        <tr class="spaceUnder">
+            <td style="text-align:center">{{item.user_name}}</td>
+            <td style="text-align:center">{{item.review}}</td>
+            <td style="text-align:center">{{item.rating}}</td>
+            <td style="text-align:center">{{item.votes}}<p>
+            <script> 
+               function clickAndDisable(link) {
+                 alert("Thank you for your upvote !");
+                  // document.getElementById("review").disabled = true;
+                 link.onclick = function(event) {
+                    event.preventDefault();
+                 }
+               }   
+            </script>
+            <a id = "review_link" href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></p></td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

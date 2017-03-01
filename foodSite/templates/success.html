@@ -2,5 +2,28 @@
 
 {%block content %}
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
-<h2> Your order has been confirmed </h2>
+<div>
+<h4>Your order number has been confirmed</h4>
+<h4>Payement method : Cash on Delivery</h4>
+<h4>Total amount : {{total}}</h4>
+<h4>Delivery Address : {{address}}</h4>
+</div>
+<h4>Your orders are as follows :</h4>
+<table style="width:70%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant</th>
+	    <th>Quantity</th>
+	    <th>Price</th> 
+	</tr>
+	{% for c in orders%}
+		<tr>
+			<td >{{c.food.name}}</td>
+		    <td>{{c.rest.name}}</td>
+		    <td>{{c.quantity}}</td>
+		    <td>{{c.amount}}</td> 
+		</tr>
+	{%endfor%}&nbsp
+</table>
+<h4>To view the status of current orders <a href="{% url 'current_orders' %}">click here</a></h4>
 {% endblock %}

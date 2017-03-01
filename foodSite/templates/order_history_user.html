@@ -6,6 +6,7 @@
     <h3>Order History : </h3>
     <table style="width:90%" >
 	<tr>
+		<th>Order Time</th>
 		<th>Food Item</th>
 	    <th>Restaurant Name</th>
 	    <th>Status</th>
@@ -15,12 +16,19 @@
 	</tr>
 	{% for c in orders%}
 		<tr>
+			<td>{{c.order_timestamp}}</td>
 			<td>{{c.food}}</td>
 		    <td>{{c.rest}}</td>
 		    <td>{{c.status}}</td></td>
 		    <td>{{c.quantity}}</td>
 		    <td>{{c.food.price}}</td>
-		    <td><a>link for review</a></td>
+		    <td>
+		   	<script type="text/javascript">
+			function click(link){
+				alert("Thank you for your upvote !")
+			}​​
+			</script>
+			<a class="disable" href="{% url 'review' pk=c.pk %}" onclick="click(this);">Add Review</a></td>
 		</tr>
 	{%endfor%}
 </table>
