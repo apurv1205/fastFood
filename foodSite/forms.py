@@ -45,7 +45,7 @@ class RegistrationRestForm(forms.Form):
     first_name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Name"))
     username = forms.RegexField(regex=r'^\d{10}$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Contact"), error_messages={ 'invalid': ("Enter a 10 digit number") })
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
-    address = forms.CharField(widget=forms.Textarea(attrs=dict(required=True, max_length=100,rows=3)),label="Address")
+    address = forms.CharField(widget=forms.Textarea(attrs=dict(required=True, max_length=100,rows=3,style='resize:none;')),label="Address")
     website = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Website"))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password (again)"))

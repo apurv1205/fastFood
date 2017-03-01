@@ -1,3 +1,149 @@
+body{
+    background: rgb(247, 247, 247);
+    font-family: 'FranchiseRegular','Arial',Arial,sans-serif; 
+}
+
+#login{
+    text-align: center;
+    width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    border: 1px solid rgba(147, 184, 189,0.8);
+    background: rgb(247, 247, 247);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+#rregister{
+    text-align: center;
+    width: 500px;
+    height: 600px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    /*margin: 0 0 35px 0;*/
+    background: rgb(247, 247, 247);
+    border: 1px solid rgba(147, 184, 189,0.8);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+#cregister{
+    text-align: center;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    position: relative;
+    padding: 18px 6% 60px 6%;
+    /*margin: 0 0 35px 0;*/
+    background: rgb(247, 247, 247);
+    border: 1px solid rgba(147, 184, 189,0.8);
+    -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+       -moz-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+            box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),  0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
+}
+
+.form{
+    font-size: 30px;
+    padding: 2px 0 10px 0;
+    font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+.res_search{
+    text-align: center;
+    width: 385px;
+    height: 400px;
+    float: left;
+    margin: 10px;
+    position: relative;
+    padding: 18px 10px 18px 10px;
+    background: rgb(247, 247, 247);
+}
+
+.scroll_pane{
+    overflow: hidden;
+    overflow-y: scroll;
+    text-align: center;
+    width: 360px;
+    height: 350px;
+    margin: 10px;
+    position: relative;
+    padding: 18px 10px 18px 10px;
+    background: rgb(255, 255, 255);
+        border: 1px solid rgb(178, 178, 178);
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
+#search{
+    text-align: center;
+    width: 360px;
+    height: 30px;
+    height: 20px;
+    margin: 10px;
+    position: relative;
+    padding: 5px 5px 60px 5px;
+    background: rgb(247, 247, 247);
+}
+
+#ss_scroll_pane{
+    height: 426px;
+}
+
+#cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
+    width: 300px;
+}
+
+#search_box, #login input:not([type = "submit"]), #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
+    /*width: 300px;*/
+    margin: 5px 5px 5px 5px;
+    padding: 10px 5px 10px 10px;    
+    border: 1px solid rgb(178, 178, 178);
+    background: rgb(247, 247, 247);
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset;
+}
+
+#search_box:active, #login input:not([type = "submit"]):active, #rregister input:not([type = "submit"]):active, #rregister textarea:active, #cregister input:not([type = "submit"]):active, #new_item input:not([type = "submit"]):active,
+#search_box:focus, #login input:not([type = "submit"]):focus, #rregister input:not([type = "submit"]):focus, #rregister textarea:focus, #cregister input:not([type = "submit"]):focus, #new_item input:not([type = "submit"]):focus{
+    border: 1px solid rgba(91, 90, 90, 0.7);
+    background: rgb(255, 255, 255);    
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+       -moz-box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+            box-shadow: 0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset;
+}
+
 .page-header {
     background-color: #ff9400;
     margin-top: 0;
@@ -46,6 +192,90 @@ h1, h2, h3, h4 {
 .post h1 a, .post h1 a:visited {
     color: #000000;
 }
+
+a.right {
+    font-size: 1.5em;
+    position: absolute;
+    top: 10px;
+    right: 40px;
+}
+
+input[type = "submit"], button {
+    width: 70px;
+    height: 30px;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    display: inline-block;
+    font-size: 16px;
+    padding: 5px 5px 5px 5px;    
+    border: 1px solid rgb(173, 173, 173);
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+      -moz-box-sizing : content-box;
+           box-sizing : content-box;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-transition-duration: 0.3s; /* Safari & Chrome */
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+input[type = "submit"]:hover, button:hover{
+    background-color: #555555;
+    color: white;
+}
+
+
+/*.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+
+.content {
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Lobster', cursive;
+}
+
+.date {
+    color: #828282;
+}
+
+.save {
+    float: left;
+}
+
+.post-form textarea, .post-form input {
+    width: 100%;
+}
+
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+
+.post {
+    margin-bottom: 70px;
+}
+
+.post h1 a, .post h1 a:visited {
+    color: #000000;
+}*/
 a.right1 {
     font-size: 1.5em;
     position: absolute;
@@ -81,5 +311,5 @@ tr.home1 > td
     padding-top: 1em;
 }
 a.disable:visited {
- color:black;
+color:black;
 }

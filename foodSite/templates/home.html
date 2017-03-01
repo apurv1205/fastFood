@@ -41,29 +41,57 @@
 <br>
 <input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
 <input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
-<h3>Select restaurant</h3>
-<table>
-{% for rest in restaurants %}
-	<tr>
-	<h5><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5>
-    </tr>
-{% endfor %}
-    </tr>
-</table>
-&nbsp &nbsp
-<form type="get" action="." style="margin: 0">
-    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
-    <button id="search_submit" type="submit" >Submit</button>
-</form>
-{% for item in category_output %}
-        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+<br/>
+&nbsp
+<div id = "container">
+	<div id = "browse" class = "res_search">
+	<h3>Select restaurant</h3>
+		<div id = "ss_scroll_pane"class = "scroll_pane">
+			<table>
+			{% for rest in restaurants %}
+				<tr>
+				<h5><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5>
+			    </tr>
+			{% endfor %}
+			    </tr>
+			</table>
+		</div>
+	</div>
+	<div id = "category" class = "res_search">
+	<h3>Search by Category</h3>
+		<div id = "search">
+		<form id = "search_form" type="get" action="." style="margin: 10px">
+		    <input  id="search_box" type="text" name="search_box"  placeholder="Browse by category..." >
+		    <button id="search_submit" type="submit" >Submit</button>
+		</form>
+		
+		</div>
 
-{% endfor %}
-<form type="get" action="." style="margin: 0">
-    <input  id="search_box1" type="text" name="search_box1"  placeholder="Search..." >
-    <button id="search_submit" type="submit" >Submit</button>
-</form>
-{% for item in search_output %}
-        <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
-{% endfor %}
+		<div class = "scroll_pane">
+			{% for item in category_output %}
+			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+			{% endfor %}
+		</div>
+	</div>
+	<div id = "ssearch" class = "res_search">
+	<h3>Search by Name</h3>	
+		<div id = "search">
+		<form  id = "search_form" type="get" action="." style="margin: 0">
+		    <input  id="search_box" type="text" name="search_box1"  placeholder="Search..." >
+		    <button id="search_submit" type="submit" >Submit</button>
+		</form>
+
+		</div>
+		<div class = "scroll_pane">
+			{% for item in search_output %}
+			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+			{% endfor %}
+		</div>
+	</div>
+	<!-- <h3> Recommended </h3>
+	<table>
+	</table> -->
+</div>
+&nbsp &nbsp
+
 {% endblock %}

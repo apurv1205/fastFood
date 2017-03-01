@@ -36,12 +36,13 @@
             <script> 
                function clickAndDisable(link) {
                  alert("Thank you for your upvote !");
+                  // document.getElementById("review").disabled = true;
                  link.onclick = function(event) {
                     event.preventDefault();
                  }
                }   
             </script>
-            <a href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></p></td>
+            <a id = "review_link" href="{% url 'upvote' pk=item.pk %}" onclick="clickAndDisable(this);">Upvote</a></p></td>
         </tr>
     {% endfor %}
     </table>

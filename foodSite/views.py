@@ -102,6 +102,8 @@ def home(request):
     cur_rest=curr_rest[0]
     form = PostForm()
     lst=[]
+
+
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)

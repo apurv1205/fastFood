@@ -4,9 +4,13 @@
 {% block content %}
     <a class="right" href="/">Login</a>
     <form method="post" action=".">{% csrf_token %}
-        <table border="0">
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Register" />
+        <div id = "rregister">
+	    	<h3 class = "form"> Register</h3>
+	        <table border="0">
+	            {{ form.as_table }}
+	        </table>
+	        <br/>
+	        <input type="submit" value="Register" />
+	    </div>
     </form>
 {% endblock %}

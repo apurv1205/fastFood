@@ -9,11 +9,15 @@
     <div class="right2">|</div>
     <a class="right1" href="/register_rest">Register for Restaurant</a>
     <form method="post" action=".">{% csrf_token %}
-        <table border="0">
-            <tr><th><label for="id_username">Contact:</label></th><td>{{ form.username }}</td></tr>
-            <tr><th><label for="id_password">Password:</label></th><td>{{ form.password }}</td></tr>
-        </table>
-        <input type="submit" value="Login" />
-        <input type="hidden" name="next" value="/home" />
+        <div id = "login">
+            <h3 class = "form">Login</h3>
+            <table border="0">
+                <tr><th><label for="id_username">Contact:</label></th><td>{{ form.username }}</td></tr>
+                <tr><th><label for="id_password">Password:</label></th><td>{{ form.password }}</td></tr>
+            </table>
+            <br/>
+            <input type="submit" value="Login" />
+            <input type="hidden" name="next" value="/home" />
+        </div>
     </form>
 {% endblock %}
