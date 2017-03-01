@@ -35,14 +35,34 @@
 	{% endif %}
 </table>
 <div id = "chome_button">
-	<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
-	<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
+	<input class="btn btn-default" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+	<input class="btn btn-default" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
 	<!-- &nbsp -->
 	<!-- <br> -->
-	<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
-	<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+	<input class="btn btn-default" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+	<input class="btn btn-default" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
 </div>
 <br/>
+<h3> Recommended items for you </h3>
+<table style="width:100%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant</th>
+	    <th>Cuisine</th>
+	    <th style="text-align:right">Category</th>
+	    <th>Price</th>
+	</tr>
+	{% for r in recommended %}
+		<tr>
+			<td width="21%"><a href="{% url 'recom_cart' pk=r.pk %}">{{r.name}}</a></td>
+		    <td width="21%">{{r.rest.name}}</td>
+		    <td width="21%">{{r.cuisine}}</td>
+		    <td width="19%">{{r.category}}</td>
+		    <td width="13%">{{r.price}}</td> 
+		</tr>
+	{%endfor%}
+</table>
+<br>
 <!-- &nbsp -->
 <div id = "container">
 	<div id = "browse" class = "res_search">
