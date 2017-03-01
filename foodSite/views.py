@@ -105,10 +105,8 @@ def home(request):
     form = PostForm()
     lst=[]
     recommended = []
-    print recommend(request)
     for r in recommend(request):
         try:
-            print "Recommend ",r[0]
             a = FoodItems.objects.filter(food_id__exact = r[0])
             recommended.append(a[0])
         except:
@@ -175,7 +173,7 @@ def home(request):
                            search_output.append(item)
 
             return render_to_response(
-            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output, 'recommended':recommended}
+            'home.html', { 'message':message,'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output, 'recommended':recommended}
             )
         elif usr.last_name == "R": 
             return render_to_response(
@@ -500,7 +498,6 @@ def train_model():
     orders = OrderHistory.objects.all()
     data = Data()
     for order in orders:
-        #print (order.quantity,order.user_id,order.food_id)
         data.add_tuple((order.quantity,order.user_id,order.food_id))
 
     svd = SVD()
@@ -513,7 +510,6 @@ def recommend(request):
     svd = train_model()
     usr = request.user
     user = Customer.objects.get(contact = str(usr.username))
-    print "User is",user
     try:
         closest_users = svd.similar(user.user_id)
     except:
@@ -523,7 +519,6 @@ def recommend(request):
         return []
     else:
         orders_done = OrderHistory.objects.filter(user_id__exact=closest_users[1][0]).values_list('food_id')
-        print "Orders ",orders_done
         if len(orders_done)<5:
             return orders_done
         else:
