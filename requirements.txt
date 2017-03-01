@@ -1,6 +1,15 @@
 appdirs==1.4.2
+csc-pysparse==1.1.1.4
+csc-utils==0.6.7
+decorator==4.0.11
+Divisi2==2.2.5
 Django==1.10.5
 editdistance==0.3.1
+networkx==1.11
+numpy==1.12.0
 packaging==16.8
 pyparsing==2.1.10
+python-recsys==0.2
+scikit-learn==0.18.1
+scipy==0.18.1
 six==1.10.0

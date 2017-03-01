@@ -2,6 +2,8 @@
 {% block title %}User Registration{% endblock %}
 {% block head %}User Registration{% endblock %}
 {% block content %}
+<div class = "image">
+
     <a class="right" href="/">Login</a>
     <form method="post" action=".">{% csrf_token %}
 	    <div id = "cregister">
@@ -14,6 +16,7 @@
 	    </div>
     </form>
 <br/>
-    
+    <div id="spacefiller" style="padding-bottom: 200px;"></div>
+</div>    
 {% endblock %}
 

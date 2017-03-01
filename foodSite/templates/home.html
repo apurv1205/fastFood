@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{% endblock %}
 {% block content %}
+<!-- <<<<<<< HEAD -->
+        <br/>
+        <br/>
+        <br/>
+
+<div id = "image_container">
 <script>
     {% for msg in message %}alert('{{ msg }}');
     {%endfor%}
 </script>
+<!-- >>>>>>> c417342633f568c9d0d67bf450e811b0dd21902b -->
     <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
 <table style="width:100%" >
 {% if message %}
@@ -39,24 +46,48 @@
 	{% endif %}
 </table>
 <div id = "chome_button">
-	<input class="btn btn-success" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
-	<input class="btn btn-success" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
+	<input class="btn btn-default" type="button" value="Checkout" onclick = "location.href='{% url 'checkout' %}'"  />
+	<input class="btn btn-default" type="button" value="Clear Cart" onclick = "location.href='{% url 'clear' %}'"  />
 	<!-- &nbsp -->
 	<!-- <br> -->
-	<input class="btn btn-success" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
-	<input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
+	<input class="btn btn-default" type="button" value="Current Orders" onclick = "location.href='{% url 'current_orders' %}'"  />
+	<input class="btn btn-default" type="button" value="Order History" onclick = "location.href='{% url 'order_history_user' %}'"  />
 </div>
 <br/>
+<h3> Recommended items for you </h3>
+<table style="width:100%" >
+	<tr>
+		<th>Food Item</th>
+	    <th>Restaurant</th>
+	    <th>Cuisine</th>
+	    <th style="text-align:right">Category</th>
+	    <th>Price</th>
+	</tr>
+	{% for r in recommended %}
+		<tr>
+			<td width="21%"><a href="{% url 'recom_cart' pk=r.pk %}">{{r.name}}</a></td>
+		    <td width="21%">{{r.rest.name}}</td>
+		    <td width="21%">{{r.cuisine}}</td>
+		    <td width="19%">{{r.category}}</td>
+		    <td width="13%">{{r.price}}</td> 
+		</tr>
+	{%endfor%}
+</table>
+<br>
 <!-- &nbsp -->
 <div id = "container">
 	<div id = "browse" class = "res_search">
 	<h3>Select restaurant</h3>
 		<div id = "ss_scroll_pane"class = "scroll_pane">
 			<table style="width:100%">
+			<tr>
+				<th style="text-align:left"><font size="4">Restaurant Name</font></th>
+				<th style="text-align:center"><font size="4">Rating</font></th>
+			</tr>
 			{% for rest in restaurants %}
 				<tr>
-				<td><h5 style="text-align:left"><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h5></td>
-				<td><h5>    {{rest.rating}}</h5></td>
+				<td><h4 style="text-align:left"><a href="{% url 'rest_detail' pk=rest.pk %}">{{ rest.name }}</a></h4></td>
+				<td><h4>    {{rest.rating|floatformat:2 }}</h4></td>
 			    </tr>
 			{% endfor %}
 			    </tr>
@@ -74,9 +105,27 @@
 		</div>
 
 		<div class = "scroll_pane">
+		<table style="width:100%">
+		{% if category_output %}
+			<tr>
+				<th style="text-align:left"><font size="4">Food Item</font></th>
+				<th style="text-align:center"><font size="4">Cuisine</font></th>
+				<th style="text-align:center"><font size="4">Price</font></th> 
+			</tr>
 			{% for item in category_output %}
-			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+				<tr>
+			    <td style="text-align:left"><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td>
+			    <td>{{item.cuisine}}</td>
+				<td>{{item.price}}</td>
+			    </tr>
 			{% endfor %}
+
+		{% else %}
+		<tr>
+			<td>No item found !</td>
+		</tr>
+		{% endif %}
+		</table>	
 		</div>
 	</div>
 	<div id = "ssearch" class = "res_search">
@@ -89,9 +138,26 @@
 
 		</div>
 		<div class = "scroll_pane">
-			{% for item in search_output %}
-			    <td><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td><br>
+		<table style="width:100%">
+		{% if search_output %}
+			<tr>
+				<th style="text-align:left"><font size="4">Food Item</font></th>
+				<th style="text-align:center"><font size="4">Cuisine</font></th>
+				<th style="text-align:center"><font size="4">Price</font></th> 
+			</tr>
+			{% for item in search_output %}		
+			<tr>
+			    <td style="text-align:left"><a href="{% url 'cart' pk=item.pk %}">{{ item.name }}</a></td>
+				<td>{{item.cuisine}}</td>
+				<td>{{item.price}}</td>
+			</tr>
 			{% endfor %}
+		{% else %}
+		<tr>
+			<td>No item found !</td>
+		</tr>
+		{% endif %}
+		</table>
 		</div>
 	</div>
 	<!-- <h3> Recommended </h3>
@@ -99,5 +165,5 @@
 	</table> -->
 </div>
 &nbsp &nbsp
-
+</div>
 {% endblock %}
