@@ -2,14 +2,17 @@
 {% block title %}{% endblock %}
 {% block content %}
 <div>
-    <a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
+<a class="right" href="/logout/">Welcome {{user.first_name}}, Logout ?</a>
 
 <h3>Add New Review</h3>
 <form method="post" action=".">
+    <div id = "review">
         <table border="0" style="width:60%">
-            {{ form.as_table }}
+            {{ form.as_table }}        	
         </table>
-   	<input type="submit" value="Add Review" />
+	</div>
+    	<br/>
+   	<input id = "add_review" type="submit" value="Add Review" />
 </form>
 </div>
 {% endblock %}
