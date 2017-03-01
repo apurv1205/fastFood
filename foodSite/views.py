@@ -133,7 +133,6 @@ def home(request):
             for item in cart :
                 customer = Customer.objects.get(pk=item.user.user_id)
                 if customer.contact == usr.username and item.status == "Added to cart":
-                    print item.food.name
                     fitem=item.food
                     ritem=item.rest
                     total=total+item.quantity*item.amount
@@ -172,12 +171,8 @@ def home(request):
             return HttpResponseRedirect('/')
 
 def rest_detail(request, pk):
-    menu = FoodItems.objects.all()
     rest = Restaurant.objects.get(pk=pk)
-    items=[]
-    for item in menu:
-        if str(item.rest.rest_id) == str(pk) : 
-            items.append(item)
+    items=FoodItems.objects.filter(rest=rest)
     return render(request, 'rest_detail.html', {'items': items , 'rest' : rest })
 
 @csrf_exempt
