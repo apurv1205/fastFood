@@ -3,6 +3,11 @@ body{
     font-family: 'FranchiseRegular','Arial',Arial,sans-serif; 
 }
 
+#container{
+    width: 90%
+    margin: 0 auto;
+}
+
 #login{
     text-align: center;
     width: 400px;
@@ -100,7 +105,7 @@ body{
 
 #search{
     text-align: center;
-    width: 360px;
+    width: 99%;
     height: 30px;
     height: 20px;
     margin: 10px;
@@ -109,12 +114,33 @@ body{
     background: rgb(247, 247, 247);
 }
 
+#chome_button{
+    width: 95%;
+    margin: 0 auto;
+
+    /*background-color: #555555;*/
+}
+
+#chome_button input{
+    width:24%;
+}
+
 #ss_scroll_pane{
     height: 426px;
 }
 
 #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
     width: 300px;
+}
+
+#search_box{
+    width: 60%;
+    height: 90%;
+}
+
+#search_submit{
+    width: 20%;
+    height: 90%;
 }
 
 #search_box, #login input:not([type = "submit"]), #cregister input:not([type = "submit"]), #rregister textarea, #rregister input:not([type = "submit"]), #new_item input:not([type = "submit"]){
