@@ -28,7 +28,7 @@
 				alert("Thank you for your upvote !")
 			}​​
 			</script>
-			<a class="disable" href="{% url 'review' pk=c.pk %}" onclick="click(this);">Add Review</a></td>
+			<a id = "review_link" href="{% url 'review' pk=c.pk %}" onclick="click(this);">Add Review</a></td>
 		</tr>
 	{%endfor%}
 </table>
