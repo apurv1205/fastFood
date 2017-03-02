@@ -11,6 +11,8 @@ import editdistance
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddressForm
 from django.contrib.auth import authenticate, login
+from recsys.algorithm.factorize import SVD
+from recsys.datamodel.data import Data
 
 @csrf_protect
 def register(request):
@@ -102,7 +104,15 @@ def home(request):
     cur_rest=curr_rest[0]
     form = PostForm()
     lst=[]
-
+    recommended = []
+    print recommend(request)
+    for r in recommend(request):
+        try:
+            print "Recommend ",r[0]
+            a = FoodItems.objects.filter(food_id__exact = r[0])
+            recommended.append(a[0])
+        except:
+            continue
     for rest in restaurants :
         if usr.username==rest.contact :
             cur_rest=Restaurant.objects.get(pk=rest.rest_id)
@@ -165,7 +175,7 @@ def home(request):
                            search_output.append(item)
 
             return render_to_response(
-            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output,'message':message}
+            'home.html', { 'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output, 'recommended':recommended}
             )
         elif usr.last_name == "R": 
             return render_to_response(
@@ -236,6 +246,33 @@ def cart(request, pk):
     message=[]
     message.append("Item Added to cart")
     return render(request, 'rest_detail.html', {'items': items , 'rest' : rest ,'message' : message ,'item':item})
+
+def recom_cart(request, pk):
+    item = get_object_or_404(FoodItems, pk=pk)
+    customers = Customer.objects.all()
+    orders=CurrentOrders.objects.all()
+    user=request.user
+    menu = FoodItems.objects.all()
+    rest = Restaurant.objects.get(pk=item.rest.rest_id)
+    items=[]
+    for item1 in menu:
+        if str(item1.rest.rest_id) == str(rest.pk) : 
+            items.append(item1)
+
+    for cust in customers :
+        if user.username == cust.contact :
+            flag=False
+            for thing in orders :
+                if thing.user.user_id==cust.user_id and thing.food.food_id == item.food_id and thing.status=="Added to cart":
+                    CurrentOrders.objects.filter(pk=thing.pk).update(quantity=thing.quantity + 1)
+                    flag=True
+
+            if flag==False :
+                C=CurrentOrders(user=cust,rest=item.rest,status="Added to cart",amount=item.price,food=item,quantity=1)
+                C.place_order()
+    message=[]
+    message.append("Item Added to cart")
+    return HttpResponseRedirect("/home/")
 
 @login_required
 def checkout(request):
@@ -458,3 +495,36 @@ def clear(request):
     for item in orders :
         item.delete()
     return HttpResponseRedirect("/home/")
+
+def train_model():
+    orders = OrderHistory.objects.all()
+    data = Data()
+    for order in orders:
+        #print (order.quantity,order.user_id,order.food_id)
+        data.add_tuple((order.quantity,order.user_id,order.food_id))
+
+    svd = SVD()
+    svd.set_data(data)
+    k=100
+    svd.compute(k=k,min_values=3,pre_normalize=None,mean_center=False, post_normalize = True)
+    return svd
+
+def recommend(request):
+    svd = train_model()
+    usr = request.user
+    user = Customer.objects.get(contact = str(usr.username))
+    print "User is",user
+    try:
+        closest_users = svd.similar(user.user_id)
+    except:
+        return []
+    orders_done = len(OrderHistory.objects.filter(user_id__exact=user.user_id))
+    if len(closest_users)<=1 or orders_done<=1:
+        return []
+    else:
+        orders_done = OrderHistory.objects.filter(user_id__exact=closest_users[1][0]).values_list('food_id')
+        print "Orders ",orders_done
+        if len(orders_done)<5:
+            return orders_done
+        else:
+            return orders_done[:5]
