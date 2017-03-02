@@ -105,87 +105,91 @@ def home(request):
     form = PostForm()
     lst=[]
     recommended = []
-    for r in recommend(request):
-        try:
-            a = FoodItems.objects.filter(food_id__exact = r[0])
-            recommended.append(a[0])
-        except:
-            continue
-    for rest in restaurants :
-        if usr.username==rest.contact :
-            cur_rest=Restaurant.objects.get(pk=rest.rest_id)
-    items=FoodItems.objects.filter(rest=cur_rest)
-    cart1=[]
-    for item in cart :
-        if item.rest.rest_id==cur_rest.rest_id :
-            if item.status=="Added to cart" : cart1.append(item)
-            elif item.status=="Cancelled" : cart1.append(item)
-            else : 
-                fitem=FoodItems.objects.get(pk=item.food.food_id)
-                lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk,item.address])
+    if usr.last_name=="C" or usr.last_name=="R" :
+        if usr.last_name=="C" :
+            for r in recommend(request):
+                try:
+                    a = FoodItems.objects.filter(food_id__exact = r[0])
+                    recommended.append(a[0])
+                except:
+                    continue
+        for rest in restaurants :
+            if usr.username==rest.contact :
+                cur_rest=Restaurant.objects.get(pk=rest.rest_id)
+        items=FoodItems.objects.filter(rest=cur_rest)
+        cart1=[]
+        for item in cart :
+            if item.rest.rest_id==cur_rest.rest_id :
+                if item.status=="Added to cart" : cart1.append(item)
+                elif item.status=="Cancelled" : cart1.append(item)
+                else : 
+                    fitem=FoodItems.objects.get(pk=item.food.food_id)
+                    lst.append([fitem.name,item.user.name,item.status,item.quantity,item.amount,item.pk,item.address])
 
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            C=FoodItems(name=form.cleaned_data['name'],rest=cur_rest,price=form.cleaned_data['price'],photo="ok",cuisine=form.cleaned_data['cuisine'],category=form.cleaned_data['category'])
-            C.save()
-            form = PostForm()
+        if request.method == "POST":
+            form = PostForm(request.POST)
+            if form.is_valid():
+                C=FoodItems(name=form.cleaned_data['name'],rest=cur_rest,price=form.cleaned_data['price'],photo="ok",cuisine=form.cleaned_data['cuisine'],category=form.cleaned_data['category'])
+                C.save()
+                form = PostForm()
+                message=[]
+                message.append("Added new item : ")
+
+                return render_to_response(
+        'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name,'items':items}
+        )
+
+        else:
             message=[]
-            message.append("Added new item : ")
-
-            return render_to_response(
-    'rest_home.html', { 'form' : form , 'orders' : lst,'user': usr,'message' : message,'item' : C.name,'items':items}
-    )
-
-    else:
-        message=[]
-        if usr.last_name == "C" :    
-            for item in cart :
-                customer = Customer.objects.get(pk=item.user.user_id)
-                if customer.contact == usr.username and item.status == "Added to cart":
-                    fitem=item.food
-                    ritem=item.rest
-                    total=total+item.quantity*item.amount
-                    crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
-            msg=""
-            if len(crt)==0 : 
-                msg="No Item in Cart, Add something !"
-                message.append(msg)
-            
-            #search by category
-            if request.method == 'GET':
+            if usr.last_name == "C" :    
+                for item in cart :
+                    customer = Customer.objects.get(pk=item.user.user_id)
+                    if customer.contact == usr.username and item.status == "Added to cart":
+                        fitem=item.food
+                        ritem=item.rest
+                        total=total+item.quantity*item.amount
+                        crt.append([fitem.name,ritem.name,item.amount,item.quantity,item.status,item.pk])
+                msg=""
+                if len(crt)==0 : 
+                    msg="No Item in Cart, Add something !"
+                    message.append(msg)
                 category_output=[]
-                search_query = request.GET.get('search_box', None)
-                if search_query!=None:
-                    for item in menu:
-                        a = item.category.lower()
-                        b = search_query.lower()
-                        c = item.cuisine.lower()
-                        if a == b or a in b or b in a or editdistance.eval(a,b)<=2:
-                           category_output.append(item)
-                        elif b == c or c in b or b in c or editdistance.eval(c,b)<=2:
-                           category_output.append(item)
-
                 search_output=[]
-                search_query = request.GET.get('search_box1', None)
-                if search_query!=None:
-                    for item in menu:
-                        a = item.name.lower()
-                        b = search_query.lower()
-                        if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
-                           search_output.append(item)
+                #search by category
+                if request.method == 'GET':
+                    
+                    search_query = request.GET.get('search_box', None)
+                    if search_query!=None:
+                        for item in menu:
+                            a = item.category.lower()
+                            b = search_query.lower()
+                            c = item.cuisine.lower()
+                            if a == b or a in b or b in a or editdistance.eval(a,b)<=2:
+                               category_output.append(item)
+                            elif b == c or c in b or b in c or editdistance.eval(c,b)<=2:
+                               category_output.append(item)
 
-            return render_to_response(
-            'home.html', { 'message':message,'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output, 'recommended':recommended}
-            )
-        elif usr.last_name == "R": 
-            return render_to_response(
-            'rest_home.html', {'form' : form , 'orders' : lst,'user': usr,'items':items}
-            )
-        
-        else : 
-            logout(request)
-            return HttpResponseRedirect('/')
+                    
+                    search_query = request.GET.get('search_box1', None)
+                    if search_query!=None:
+                        for item in menu:
+                            a = item.name.lower()
+                            b = search_query.lower()
+                            if a == b or a in b or b in a or editdistance.eval(a,b)<=3:
+                               search_output.append(item)
+
+                return render_to_response(
+                'home.html', { 'message':message,'total' : total,'cart' : crt, 'user': usr, 'menu' : menu, 'restaurants' : restaurants ,'category_output' : category_output , 'search_output' : search_output, 'recommended':recommended}
+                )
+
+            elif usr.last_name == "R": 
+                return render_to_response(
+                'rest_home.html', {'form' : form , 'orders' : lst,'user': usr,'items':items}
+                )
+            
+    else : 
+        logout(request)
+        return HttpResponseRedirect('/')
 
 def rest_detail(request, pk):
     rest = Restaurant.objects.get(pk=pk)

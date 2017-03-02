@@ -29,7 +29,7 @@
 		    <td>{{item.price}}</td>
 		    <td>{{item.cuisine}}</td>
 		    <td>{{item.category}}</td>
-		    <td><a class="disable" href="{% url 'cart' pk=item.pk %}">Add to cart</a></td>
+		    <td><a id = "review_link" href="{% url 'cart' pk=item.pk %}">Add to cart</a></td>
 		</tr>
 	{% endfor %}
 	</table>

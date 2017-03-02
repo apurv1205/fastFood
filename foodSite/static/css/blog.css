@@ -1,12 +1,27 @@
 body{
     background: rgb(247, 247, 247);
     font-family: 'FranchiseRegular','Arial',Arial,sans-serif; 
+    /*background-clip: '/static/Image/BBQ_TBHP.jpg'*/
+}
+
+#logo{
+    width: 250px;
+    height: 80px;
+    -webkit-box-shadow: 5px;
+    -moz-border-radius: 5px;
+         border-radius: 5px;
 }
 
 #container{
+    /*opacity: 0.8;*/
     width: 90%
     margin: 0 auto;
 }
+
+.image{
+    background-image: url("/static/Image/BBQ_TBHP.jpg");
+}
+
 
 #add_review{
     width: 8%
@@ -17,8 +32,9 @@ body{
 }
 
 #login{
+    opacity: 0.7;
     text-align: center;
-    width: 400px;
+    width: 500px;
     height: 300px;
     margin: 0 auto;
     position: relative;
@@ -179,9 +195,11 @@ body{
 }
 
 .page-header {
-    background-color: #ff9400;
+    /*background-color: #ff9400;*/
+    height: 200px;
+    background-image: url("/static/Image/base.jpg");
     margin-top: 0;
-    padding: 20px 20px 20px 40px;
+    padding: 20px 20px 60px 40px;
 }
 
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
@@ -295,8 +313,9 @@ tr.home1 > td
 {
     padding-top: 1em;
 }
-a.disable:visited {
-color:black;
+tr.home2 > td
+{
+    padding-bottom: 1.5em;
 }
 
 .niche {

@@ -10,6 +10,7 @@
     <h3>Restaurant name : {{user.first_name}} </h3>
     <h3>Current Orders : </h3>
     <table style="width:90%" >
+    {% if orders %}
 	<tr>
 		<th>Food Item</th>
 	    <th>Customer Name</th>
@@ -30,31 +31,40 @@
 		    <td><a href="{% url 'change_status' pk=c.5 %}">Change Status</a></td>
 		</tr>
 	{%endfor%}
+	{% else %}
+	<th>No Orders Currently !</th>
+	{% endif %}
+
 </table>
-<!-- <<<<<<< HEAD -->
+
 <br/>
 <input class="btn btn-success" type="button" value="Order History" onclick = "location.href='{% url 'order_history' %}'"  />
-
+<hr width=100% align=left>
 <div>
  <h3>Current Food Items :</h3>
         <table style="width:70%" >
+        {% if items %}
 		<tr>
 			<th>Food Item</th>
 		    <th>Price</th>
 		    <th>Cuisine</th>
 		    <th>Category</th>
 		</tr>
-		{% for item in items%}
-		<tr>
-			<td>{{item.name}}</td>
-		    <td>{{item.price}}</td>
-		    <td>{{item.cuisine}}</td>
-		    <td>{{item.category}}</td>
-		</tr>
-	{% endfor %}
+			{% for item in items%}
+			<tr>
+				<td>{{item.name}}</td>
+			    <td>{{item.price}}</td>
+			    <td>{{item.cuisine}}</td>
+			    <td>{{item.category}}</td>
+			</tr>
+			{% endfor %}
+		{% else %}
+		<th>No food items currently !</th>
+		{% endif %}
 	</table>
 </div>
 <br/>
+<hr width=100% align=left>
 <div id = "new_item">
 	<h3>Add New Items</h3>
 	<form method="post" action=".">
@@ -64,13 +74,7 @@
 	        <br/>
 	   	<input type="submit" value="Add Item" />
 	</form>
-<!-- ======= -->
 
 </div>
-
-	        <br/>
-
-	        <br/>
-	        
 
 {% endblock %}
