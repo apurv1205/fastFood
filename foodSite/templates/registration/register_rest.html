@@ -2,6 +2,8 @@
 {% block title %}Restaurant Registration{% endblock %}
 {% block head %}Restaurant Registration{% endblock %}
 {% block content %}
+<div class = "image">
+
     <a class="right" href="/">Login</a>
     <form method="post" action=".">{% csrf_token %}
         <div id = "rregister">
@@ -14,5 +16,5 @@
 	    </div>
     </form>
 <br/>
-    
+</div>    
 {% endblock %}

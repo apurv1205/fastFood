@@ -2,6 +2,8 @@
 {% block title %}Login{% endblock %}
 {% block head %}Login{% endblock %}
 {% block content %}
+<br/>
+<div class = "image">
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -20,4 +22,6 @@
             <input type="hidden" name="next" value="/home" />
         </div>
     </form>
+    <div id="spacefiller" style="padding-bottom: 270px;"></div>
+</div>
 {% endblock %}
