@@ -1,0 +1,41 @@
+DBMS Lab Assignment 3:
+
+Web Based Information System Design
+
+The goal of this project is to build a complete web based information system having a backend database, a connectivity server, front end scripts and finally a form based web interface. Any database server/scripting language can be used to build the system. However, the use of a database and scripts are compulsory. The information system to be built is a:
+
+Online Restaurant Aggregator and Food Order System
+
+Objective:
+
+i. Web based application for online browsing and search of menu aggregated from multiple restaurants e.g., the services provided by commercial websites like www.zomato.com, www.just-eat.com .
+
+ii. Customers can order food delivery online. Orders are to be forwarded to respective restaurants, who will deliver the food and bill the customers.
+
+Users of the System:  A. System Administrator   B. Restaurants  C. Customers    
+
+Functional Requirements:
+
+i. The system must provide an entry page which will be the home page after login. The entry page should display available menu, restaurant information, search and browse by category interface and a customer purchase cart.
+
+Optionally, the database of restaurants may be populated using the API offered by Zomato for a particular city say Kharagpur. URL: https://developers.zomato.com/api
+
+ii. The system should provide a restaurant/customer registration module.
+
+iii. iv. The system should allow customers to place orders and track their orders through different stages of delivery.
+
+iv. The system should offer billing facility.
+
+v. The system should track user history and suggest favorites (bonus points).
+
+ 
+
+Group size: At most 5 students per group. Time: 3 week. ER Diagram to be submitted by next week.
+
+ 
+
+Submissions:
+
+i. Demonstration of the project in Lab.
+
+ii. A report consisting of: a. Name and roll number of group members, b. ER Diagram, C. Workflow diagrams, D. Module diagram of the system, D. List of tools used. 
