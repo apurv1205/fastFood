@@ -1,6 +1,7 @@
 # Online food ordering system
 > Group project for DBMS lab course in IIT Kharagpur  
-
+> The data for reviews, food items and restaurants was taken from an open source dataset : http://menus.nypl.org/data
+> We used collaborative filtering for recomendation system from the following project : https://github.com/ocelma/python-recsys 
 ## Contributors
 
 1. [Apurv Kumar](https://github.com/apurv1205)
